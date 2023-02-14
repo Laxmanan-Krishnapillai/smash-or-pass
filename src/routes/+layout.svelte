@@ -16,6 +16,7 @@
 		const token = document.cookie.split('token=')[1].split(';')[0];
 		console.log(token);
 		if (!token) goto('/login');
+		if (!cirql.isConnected) cirql.connect();
 		await cirql.ready();
 		if (!cirql.options.credentials) await cirql.signIn({ token });
 	});
