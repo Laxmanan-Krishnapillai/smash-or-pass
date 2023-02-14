@@ -15,15 +15,7 @@
 			visible = true;
 		}
 		const token = document.cookie.split('token=')[1].split(';')[0];
-		console.log(token);
-		if (!cirql.isConnected) {
-			await cirql.connect();
-		}
 		if (!token) goto('/login');
-		await cirql.ready();
-		if (!cirql.options.credentials) {
-			await cirql.signIn({ token });
-		}
 	});
 	export { cirql };
 </script>
