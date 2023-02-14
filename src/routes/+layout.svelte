@@ -17,18 +17,19 @@
 		const token = document.cookie.split('token=')[1].split(';')[0];
 		console.log(token);
 		if (!token) goto('/login');
-		cirql.set(
-			new CirqlStateless({
-				connection: {
-					endpoint: 'https://surrealhost.fly.dev/',
-					namespace: 'lectio',
-					database: 'main'
-				},
-				credentials: {
-					token
-				}
-			})
-		);
+		if (token)
+			cirql.set(
+				new CirqlStateless({
+					connection: {
+						endpoint: 'https://surrealhost.fly.dev/',
+						namespace: 'lectio',
+						database: 'main'
+					},
+					credentials: {
+						token
+					}
+				})
+			);
 	});
 	export { cirql };
 </script>
