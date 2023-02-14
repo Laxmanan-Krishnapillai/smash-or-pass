@@ -1,8 +1,10 @@
 import { Client } from '$lib/lectio';
-import { db } from '$lib/server/db';
+import { cirql } from '$lib/server/db';
 import * as jwt from 'jsonwebtoken';
 import { json, type RequestHandler } from '@sveltejs/kit';
 import fs from 'fs/promises';
+import { create, query } from 'cirql';
+import { ClassSchema, StudentSchema } from '$lib/schema';
 export const GET: RequestHandler = async ({ request }) => {
 	const client = new Client({
 		username: 'siva0077',
@@ -11,7 +13,6 @@ export const GET: RequestHandler = async ({ request }) => {
 	});
 	const worked = await client.authenticate();
 	if (!worked) new Response('Forkert brugernavn eller adgangskode', { status: 400 });
-	db.use('lectio', 'main');
 	const regex = /<a[^>]*href=['"][^"']+klasseid[^"']+["'][^>]*>([^<]+)<\/a>/g;
 	const classes = (
 		await (
@@ -103,11 +104,15 @@ const throttleUploadStudents = async (
 	const students = await getStudents(klasse.klasse_id, sessionId);
 	if (students && students.students.length > 0) {
 		console.log(students);
-		const dbklasse = await db.create('class', {
-			name: klasse.name,
-			lectio_id: klasse.klasse_id,
-			student_count: students.student_count,
-			school: dbschoolId
+		const dbklasse = await cirql.execute({
+			query: create('class'),
+			schema: ClassSchema,
+			params: {
+				name: klasse.name,
+				lectio_id: klasse.klasse_id,
+				student_count: students.student_count,
+				school: dbschoolId
+			}
 		});
 		if (dbklasse) {
 			const studentArray = students.students.map((student) => {
@@ -119,7 +124,11 @@ const throttleUploadStudents = async (
 					name: student.fullName + ' ' + student.lastName
 				};
 			});
-			const dbstudents = await db.query('INSERT into student $studentArray', { studentArray });
+			const dbstudents = await cirql.execute({
+				query: query('INSERT into student $studentArray'),
+				schema: StudentSchema,
+				params: { studentArray }
+			});
 			console.log(dbstudents);
 		}
 	}

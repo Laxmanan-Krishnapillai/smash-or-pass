@@ -27,7 +27,8 @@ export const ClassSchema = z.object({
 	name: z.string(),
 	student_count: z.number(),
 	created_at: z.string(),
-	school: z.string()
+	school: z.string(),
+	id: z.string()
 });
 /*DEFINE TABLE elo_rating SCHEMAFULL;
 DEFINE FIELD created_at ON TABLE elo TYPE datetime VALUE time::now();
