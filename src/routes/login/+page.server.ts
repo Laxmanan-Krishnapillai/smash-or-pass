@@ -40,7 +40,6 @@ export const actions = {
 			});
 		const { lectioId, sessionId, expires, lectioTicket, lectiogsc } = client;
 		console.log(lectioId, sessionId, expires, lectioTicket, lectiogsc);
-		await cirql.ready();
 		const user = await cirql.execute({
 			query: query(
 				'UPDATE (select id from student where lectio_id = $lectioId limit 1) MERGE {username: $username, password: $password, lectio_tokens: {token: $sessionId, expires: $expires, ticket: $lectioTicket, gsc: $lectiogsc}}'

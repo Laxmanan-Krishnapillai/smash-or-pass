@@ -1,6 +1,6 @@
-import { Cirql } from 'cirql';
+import { CirqlStateless } from 'cirql';
 import { SURREALDB_USER, SURREALDB_PASS } from '$env/static/private';
-const cirql = new Cirql({
+const cirql = new CirqlStateless({
 	connection: {
 		endpoint: 'https://surrealhost.fly.dev/',
 		namespace: 'lectio',

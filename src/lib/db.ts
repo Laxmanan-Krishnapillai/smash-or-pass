@@ -1,7 +1,7 @@
 import Surreal from 'surrealdb.js';
-import { Cirql } from 'cirql';
+import { CirqlStateless } from 'cirql';
 
-const cirql = new Cirql({
+const cirql = new CirqlStateless({
 	connection: {
 		endpoint: 'https://surrealhost.fly.dev/',
 		namespace: 'lectio',
