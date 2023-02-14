@@ -1,3 +1,4 @@
+/**
 import { json, type RequestHandler } from '@sveltejs/kit';
 import fs from 'fs/promises';
 import { cirql } from '$lib/server/db';
@@ -30,3 +31,5 @@ export const GET: RequestHandler = async ({ request }) => {
 	});
 	return json({ classes: uploadClasses, students: uploadStudents });
 };
+
+*/

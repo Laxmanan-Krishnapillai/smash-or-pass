@@ -1,10 +1,9 @@
+/*
 import { Client } from '$lib/lectio';
 import { cirql } from '$lib/server/db';
-import * as jwt from 'jsonwebtoken';
 import { json, type RequestHandler } from '@sveltejs/kit';
-import fs from 'fs/promises';
 import { create, query } from 'cirql';
-import { ClassSchema, StudentSchema } from '$lib/schema';
+import { ClassSchema, SchoolSchema, StudentSchema } from '$lib/schema';
 export const GET: RequestHandler = async ({ request }) => {
 	const client = new Client({
 		username: 'siva0077',
@@ -36,9 +35,13 @@ export const GET: RequestHandler = async ({ request }) => {
 		})
 		.filter((c) => c);
 	parsedClasses.pop();
-	const dbschool = await db.create('school:eg', {
-		name: 'Espergærde Gymnasium',
-		lectio_id: '57'
+	const dbschool = await cirql.execute({
+		query: create('school:eg'),
+		schema: SchoolSchema,
+		params: {
+			name: 'Espergærde Gymnasium',
+			lectio_id: '57'
+		}
 	});
 	await throttleUploadStudents(parsedClasses as klasse[], 2000, dbschool.id, client.sessionId);
 	// fs.writeFile('classes.json', JSON.stringify(parsedClasses));
@@ -88,7 +91,7 @@ const getStudents = async (klasse_id: string, sessionId: string) => {
 	};
 };
 
-/* throttleUploadStudents is a function that does your processing spaced by the given interval millisecond */
+// throttleUploadStudents is a function that does your processing spaced by the given interval millisecond
 const throttleUploadStudents = async (
 	items: klasse[],
 	interval: number,
@@ -137,3 +140,4 @@ const throttleUploadStudents = async (
 		interval
 	);
 };
+*/

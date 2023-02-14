@@ -30,6 +30,19 @@ export const ClassSchema = z.object({
 	school: z.string(),
 	id: z.string()
 });
+/**
+DEFINE TABLE school SCHEMAFULL PERMISSIONS FOR SELECT WHERE $token.id != NONE, FOR CREATE NONE, FOR UPDATE NONE, FOR DELETE NONE;
+DEFINE FIELD lectio_id ON TABLE school TYPE string ASSERT $value != NONE;
+DEFINE FIELD name ON TABLE school TYPE string ASSERT $value != NONE;
+DEFINE FIELD created_at ON TABLE school TYPE datetime VALUE time::now();
+ */
+
+export const SchoolSchema = z.object({
+	lectio_id: z.string(),
+	name: z.string(),
+	created_at: z.string(),
+	id: z.string()
+});
 /*DEFINE TABLE elo_rating SCHEMAFULL;
 DEFINE FIELD created_at ON TABLE elo TYPE datetime VALUE time::now();
 DEFINE FIELD author ON TABLE elo TYPE record (student) ASSERT $value != NONE;
