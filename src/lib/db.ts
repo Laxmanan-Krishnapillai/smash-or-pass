@@ -1,11 +1,7 @@
 import Surreal from 'surrealdb.js';
-import { CirqlStateless } from 'cirql';
+import type { CirqlStateless } from 'cirql';
+import { writable } from 'svelte/store';
 
-const cirql = new CirqlStateless({
-	connection: {
-		endpoint: 'https://surrealhost.fly.dev/',
-		namespace: 'lectio',
-		database: 'main'
-	}
-});
+const cirql = writable<CirqlStateless | null>(null);
+
 export { cirql };

@@ -1,13 +1,14 @@
-<script>
+<script lang="ts">
 	// import '@skeletonlabs/skeleton/themes/theme-skeleton.css';
 	import '../theme.postcss';
 	import '@skeletonlabs/skeleton/styles/all.css';
 	import '../app.postcss';
-	import { Toast, toastStore } from '@skeletonlabs/skeleton';
+	import { Toast } from '@skeletonlabs/skeleton';
 	import { goto } from '$app/navigation';
-	import { cirql } from '$lib/db';
 	import { fly } from 'svelte/transition';
 	import { onMount } from 'svelte';
+	import { CirqlStateless } from 'cirql';
+	import { cirql } from '$lib/db';
 	let visible = false;
 	onMount(async () => {
 		if (!localStorage.getItem('cookie')) {
@@ -16,8 +17,20 @@
 		const token = document.cookie.split('token=')[1].split(';')[0];
 		console.log(token);
 		if (!token) goto('/login');
-		if (cirql.options.credentials === undefined) await cirql.signIn({ token });
+		cirql.set(
+			new CirqlStateless({
+				connection: {
+					endpoint: 'https://surrealhost.fly.dev/',
+					namespace: 'lectio',
+					database: 'main'
+				},
+				credentials: {
+					token
+				}
+			})
+		);
 	});
+	export { cirql };
 </script>
 
 <header

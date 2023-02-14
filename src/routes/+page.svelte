@@ -12,7 +12,7 @@
 	let activeClass: string[] = [];
 	onMount(async () => {
 		classes = (
-			await cirql.execute({
+			await $cirql!.execute({
 				query: select('name').from('class'),
 				schema: ClassSchema.pick({ name: true })
 			})
@@ -32,7 +32,7 @@
 		debounceTimeout = setTimeout(async () => {
 			if (val.length > 0 || activeClass.length > 0) {
 				const newStudents = (
-					await cirql.execute({
+					await $cirql!.execute({
 						query: query(
 							`SELECT * FROM student WHERE ${
 								val.length > 0 ? `string::startsWith(name, ${val}) AND` : ''
