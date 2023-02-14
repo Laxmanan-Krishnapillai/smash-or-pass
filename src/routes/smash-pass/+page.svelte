@@ -25,7 +25,7 @@
 	const votedOnBefore = writable<string[]>(initialValue);
 	const vote = async (vote: boolean) => {
 		if ($student === null) return;
-		const res = await $cirql!.execute({
+		const res = await cirql.execute({
 			query: relate(uid, 'voted_on', $student.id).set('vote', vote),
 			schema: VotedOnSchema
 		});
@@ -34,7 +34,7 @@
 		setStudent($isChecked);
 	};
 	const setStudent = async (checked: boolean) => {
-		const res = await $cirql!.execute({
+		const res = await cirql.execute({
 			query: select()
 				.from('student')
 				.limit(1)
@@ -61,7 +61,7 @@
 	});
 	onMount(async () => {
 		const before = (
-			await $cirql!.execute({
+			await cirql.execute({
 				query: select('out').from('voted_on'),
 				schema: VotedOnSchema.pick({ out: true })
 			})

@@ -12,7 +12,7 @@
 	let activeClass: string[] = [];
 	onMount(async () => {
 		classes = (
-			await $cirql!.execute({
+			await cirql.execute({
 				query: select('name').from('class'),
 				schema: ClassSchema.pick({ name: true })
 			})

@@ -15,7 +15,7 @@
 		// Another whole number between 0 and 500 (but not the same as the first)
 		const val2_check = Math.floor(Math.random() * 500);
 		const val2 = val2_check === val1 ? val2_check + 1 : val2_check;
-		const res = await $cirql!.batch(
+		const res = await cirql.batch(
 			{
 				query: query(
 					`SELECT * FROM student WHERE gender == ${
@@ -42,7 +42,7 @@
 		console.log(students);
 	});
 	const vote = async (winner: string, loser: string) => {
-		const res = await $cirql!.execute({
+		const res = await cirql.execute({
 			query: create('elo_rating').content({
 				winner,
 				loser,

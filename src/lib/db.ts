@@ -4,7 +4,7 @@ import { writable } from 'svelte/store';
 
 const cirql = new Cirql({
 	connection: {
-		endpoint: 'https://surrealhost.fly.dev/',
+		endpoint: 'wss://surrealhost.fly.dev/',
 		namespace: 'lectio',
 		database: 'main'
 	}
