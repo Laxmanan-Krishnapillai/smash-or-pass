@@ -2213,7 +2213,7 @@
 	{
 		"class": "class:sdjpjv9jg2yeu8s4f94p",
 		"created_at": "2023-01-26T09:45:25.098127100Z",
-		"gender": "male",
+		"gender": "female",
 		"id": "student:6n1lo3gcfbkgdxn3iad5",
 		"lectio_id": "54123560727",
 		"lectio_tokens": { "created_at": "2023-01-26T09:45:25.195580900Z" },
@@ -7064,7 +7064,7 @@
 	{
 		"class": "class:ieav6od9xfj5f5er9xpj",
 		"created_at": "2023-01-26T09:44:39.712425900Z",
-		"gender": "male",
+		"gender": "female",
 		"id": "student:l7qzuji3fzeis8jjltts",
 		"lectio_id": "47909093015",
 		"lectio_tokens": { "created_at": "2023-01-26T09:44:39.813109600Z" },
