@@ -44,12 +44,17 @@
 					await cirql.execute({
 						query: query(
 							`SELECT * FROM student WHERE ${
-								val.length > 0 ? `string::startsWith(name, ${val}) AND` : ''
-							} gender == ${gender} ${
-								activeClass.length > 0 ? `AND class.name inside ${activeClass}` : ''
+								val.length > 0 ? `string::startsWith(name, $val) AND` : ''
+							} gender == $gender ${
+								activeClass.length > 0 ? `AND class.name inside activeClass` : ''
 							}`
 						),
-						schema: StudentSchema
+						schema: StudentSchema,
+						params: {
+							gender,
+							val,
+							activeClass
+						}
 					})
 				).filter((student) => student !== undefined);
 				students.set(newStudents);

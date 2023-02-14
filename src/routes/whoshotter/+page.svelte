@@ -17,19 +17,20 @@
 		const val2 = val2_check === val1 ? val2_check + 1 : val2_check;
 		const res = await cirql.batch(
 			{
-				query: query(
-					`SELECT * FROM student WHERE gender == ${
-						gender ? 'female' : 'male'
-					} limit 1 start ${val1}`
-				).single(),
-				schema: StudentSchema
+				query: query(`SELECT * FROM student WHERE gender == $genderlimit 1 start ${val1}`).single(),
+				schema: StudentSchema,
+				params: {
+					gender: gender ? 'female' : 'male'
+				}
 			},
 			{
 				query: query(
-					`SELECT * FROM student WHERE gender == ${
-						gender ? 'female' : 'male'
-					} limit 1 start ${val2}`
+					`SELECT * FROM student WHERE gender == $gender limit 1 start ${val2}`
 				).single(),
+				params: {
+					gender: gender ? 'female' : 'male'
+				},
+
 				schema: StudentSchema
 			}
 		);
