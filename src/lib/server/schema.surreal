@@ -1,0 +1,86 @@
+// SELECT * FROM student WHERE gender = "female" and name CONTAINS "x" order by name asc
+// select name, string::length(name) as length from student order by length desc
+// SELECT *, string::length(name) as count from student order by count desc
+// select *, (select name from student where class.id == $parent.id and gender == "male" order by name asc) as men, (select count() as count from student where class.id == $parent.id and gender == "male" group by all limit 1) as men_count from class order by men_count asc;
+
+// SELECT count() as classes, (select count() as count from student group by all limit 1) as students, (select count() as count from student where gender == "male" group by all limit 1) as men, (select count() as count from student where gender == "female" group by all limit 1) as women from class group by all;
+// select * from student where gender != "male" and gender != "female"
+// select * from student where name contains "Sif"
+// select *, (select count() as count from student where string::startsWith(name, "Frederik ") and class.id == $parent.id group by all limit 1) as num from class order by num desc
+// select * from student where name ?~ "Mamm"
+
+
+DEFINE NS lectio;
+DEFINE DB main;
+USE NS lectio;
+USE DB main;
+DEFINE TABLE student SCHEMAFULL PERMISSIONS FOR SELECT WHERE $token.id != NONE, FOR CREATE NONE, FOR UPDATE NONE, FOR DELETE NONE;
+DEFINE FIELD username ON TABLE student TYPE string PERMISSIONS NONE;
+DEFINE FIELD password ON TABLE student TYPE string VALUE crypto::argon2::generate($value) PERMISSIONS NONE;
+DEFINE FIELD lectio_id ON TABLE student TYPE string ASSERT $value != NONE;
+DEFINE FIELD picture_id ON TABLE student TYPE string ASSERT $value != NONE;
+DEFINE FIELD name ON TABLE student TYPE string ASSERT $value != NONE;
+DEFINE FIELD created_at ON TABLE student TYPE datetime VALUE time::now();
+DEFINE FIELD lectio_tokens ON TABLE student TYPE object;
+DEFINE FIELD lectio_tokens.expires ON TABLE student TYPE string;
+DEFINE FIELD lectio_tokens.token ON TABLE student string PERMISSIONS NONE;
+DEFINE FIELD lectio_tokens.gsc ON TABLE student TYPE string;
+DEFINE FIELD lectio_tokens.ticket ON TABLE student TYPE string;
+DEFINE FIELD lectio_tokens.created_at ON TABLE student TYPE datetime;
+DEFINE INDEX lectio_id ON TABLE student FIELDS lectio_id UNIQUE;
+DEFINE FIELD school ON TABLE student TYPE string VALUE "57";
+DEFINE FIELD class ON TABLE student TYPE record (class);
+
+DEFINE INDEX username ON TABLE student FIELDS username UNIQUE;
+DEFINE INDEX picture_id ON TABLE student FIELDS picture_id UNIQUE;
+DEFINE FIELD elo ON TABLE student TYPE number VALUE $value OR 1500;
+
+DEFINE SCOPE student;
+DEFINE TOKEN student ON SCOPE student TYPE HS512 VALUE 'bD8gLl0EJQYjHkcOv9Xb+1CwnjZUBJ4sE+xg0zRtFkE=';
+
+DEFINE TABLE class SCHEMAFULL permissions FOR SELECT WHERE $token.id != NONE, FOR CREATE NONE, FOR UPDATE NONE, FOR DELETE NONE;
+DEFINE FIELD lectio_id ON TABLE class TYPE string ASSERT $value != NONE;
+DEFINE FIELD name ON TABLE class TYPE string ASSERT $value != NONE;
+DEFINE FIELD student_count ON TABLE class TYPE int;
+DEFINE FIELD created_at ON TABLE class TYPE datetime VALUE time::now();
+DEFINE INDEX lectio_id ON TABLE class FIELDS lectio_id UNIQUE;
+DEFINE FIELD school ON TABLE class TYPE record (school) ASSERT $value != NONE;
+
+DEFINE TABLE school SCHEMAFULL PERMISSIONS FOR SELECT WHERE $token.id != NONE, FOR CREATE NONE, FOR UPDATE NONE, FOR DELETE NONE;
+DEFINE FIELD lectio_id ON TABLE school TYPE string ASSERT $value != NONE;
+DEFINE FIELD name ON TABLE school TYPE string ASSERT $value != NONE;
+DEFINE FIELD created_at ON TABLE school TYPE datetime VALUE time::now();
+
+DEFINE TABLE voted_on SCHEMAFULL PERMISSIONS FOR CREATE WHERE $token.id == in FOR SELECT WHERE $token.id != NONE, FOR UPDATE NONE, FOR DELETE NONE;
+DEFINE FIELD created_at ON TABLE voted_on TYPE datetime VALUE time::now();
+DEFINE FIELD in ON TABLE voted_on TYPE record (student);
+DEFINE FIELD out ON TABLE voted_on TYPE record (student);
+DEFINE FIELD vote ON TABLE voted_on TYPE bool ASSERT $value != NONE;
+DEFINE INDEX vote ON TABLE student COLUMNS in, out UNIQUE;
+
+DEFINE TABLE elo_rating SCHEMAFULL PERMISSIONS FOR CREATE WHERE $token.id == author FOR SELECT WHERE $token.id != NONE, FOR UPDATE NONE, FOR DELETE NONE;
+DEFINE FIELD created_at ON TABLE elo_rating TYPE datetime VALUE time::now();
+DEFINE FIELD author ON TABLE elo_rating TYPE record (student) ASSERT $value != NONE;
+DEFINE FIELD winner ON TABLE elo_rating TYPE record (student) ASSERT $value != NONE;
+DEFINE FIELD loser ON TABLE elo_rating TYPE record (student) ASSERT $value != NONE;
+DEFINE FIELD winner_elo_before ON TABLE elo_rating TYPE number VALUE $this.winner.elo;
+DEFINE FIELD loser_elo_before ON TABLE elo_rating TYPE number VALUE $this.loser.elo;
+DEFINE INDEX author ON TABLE elo_rating COLUMNS author, winner, loser UNIQUE;
+
+DEFINE EVENT change_elo ON TABLE elo_rating WHEN $event == "CREATE" THEN
+  (UPDATE $after.winner.id SET elo = function($after.winner_elo_before, $after.loser_elo_before) {
+	const score = arguments[0] + 15*(1 - (1/(1 + 10**((arguments[1] - arguments[0]) / 400))))
+	return score;
+  })
+  &&   ( UPDATE $after.loser.id SET elo = function($after.loser_elo_before, $after.winner_elo_before) {
+	const score = arguments[0] + 15*(0 - (1/(1 + 10**((arguments[1] - arguments[0]) / 400))))
+	return score;
+  });
+DEFINE FIELD gender ON student TYPE string VALUE $before OR function((http::post("https://v2.namsor.com/NamSorAPIv2/api2/json/genderFullGeoBatch", {
+	"personalNames": [{name: $this.name, countryIso2: "DK"}]
+}, {
+		"X-API-KEY": "8765cc904bf2fb0056a3ebab0623a902",
+}))){	
+	return arguments[0].personalNames[0].likelyGender;
+}
+;

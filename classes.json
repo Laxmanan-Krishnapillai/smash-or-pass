@@ -1,0 +1,346 @@
+[
+	{
+		"created_at": "2023-01-26T09:44:27.153308Z",
+		"id": "class:1trsls3rf5jzw4r6qlgl",
+		"lectio_id": "47909085168",
+		"name": "3d",
+		"school": "school:eg",
+		"student_count": 24
+	},
+	{
+		"created_at": "2023-01-26T09:43:52.263524700Z",
+		"id": "class:24nvki667oubieno0snx",
+		"lectio_id": "49800188430",
+		"name": "2m",
+		"school": "school:eg",
+		"student_count": 23
+	},
+	{
+		"created_at": "2023-01-26T09:42:45.193348600Z",
+		"id": "class:35693oa6h1xs8vsvb18n",
+		"lectio_id": "52943740500",
+		"name": "1n",
+		"school": "school:eg",
+		"student_count": 29
+	},
+	{
+		"created_at": "2023-01-26T09:44:48.308711700Z",
+		"id": "class:45vqnftnw2cljsdsar9t",
+		"lectio_id": "47909084449",
+		"name": "3k",
+		"school": "school:eg",
+		"student_count": 28
+	},
+	{
+		"created_at": "2023-01-26T09:42:50.805401300Z",
+		"id": "class:4y67c5ryh2axfx41n8fy",
+		"lectio_id": "52943741832",
+		"name": "1t",
+		"school": "school:eg",
+		"student_count": 30
+	},
+	{
+		"created_at": "2023-01-26T09:42:39.078014100Z",
+		"id": "class:5qk6wvwpub483i7ai13v",
+		"lectio_id": "52943739397",
+		"name": "1m",
+		"school": "school:eg",
+		"student_count": 30
+	},
+	{
+		"created_at": "2023-01-26T09:41:41.555018600Z",
+		"id": "class:5uikb3vvhi6evryxjgbd",
+		"lectio_id": "52943728680",
+		"name": "1b",
+		"school": "school:eg",
+		"student_count": 22
+	},
+	{
+		"created_at": "2023-01-26T09:44:01.807277Z",
+		"id": "class:6ftyrxttqwtxbpvh57vw",
+		"lectio_id": "49800190313",
+		"name": "2t",
+		"school": "school:eg",
+		"student_count": 26
+	},
+	{
+		"created_at": "2023-01-26T09:42:03.316746100Z",
+		"id": "class:6ray9w1q7kyyuojux1to",
+		"lectio_id": "52943734097",
+		"name": "1f",
+		"school": "school:eg",
+		"student_count": 30
+	},
+	{
+		"created_at": "2023-01-26T09:41:57.418474700Z",
+		"id": "class:7ur3npgqmjej5gve291l",
+		"lectio_id": "52943732748",
+		"name": "1e",
+		"school": "school:eg",
+		"student_count": 30
+	},
+	{
+		"created_at": "2023-01-26T09:42:27.125847600Z",
+		"id": "class:at3bp5lupznnkzomve09",
+		"lectio_id": "52943736053",
+		"name": "1k",
+		"school": "school:eg",
+		"student_count": 29
+	},
+	{
+		"created_at": "2023-01-26T09:42:33.728765200Z",
+		"id": "class:dbe18lb0audt5r9fbver",
+		"lectio_id": "52943737508",
+		"name": "1l",
+		"school": "school:eg",
+		"student_count": 26
+	},
+	{
+		"created_at": "2023-01-26T09:44:11.971938200Z",
+		"id": "class:dpqv4an72p24pkp08zrb",
+		"lectio_id": "47909084505",
+		"name": "3a",
+		"school": "school:eg",
+		"student_count": 27
+	},
+	{
+		"created_at": "2023-01-26T09:43:19.163830700Z",
+		"id": "class:drns4vt46zp9suv8pjze",
+		"lectio_id": "49800182422",
+		"name": "2d",
+		"school": "school:eg",
+		"student_count": 24
+	},
+	{
+		"created_at": "2023-01-26T09:44:21.751623900Z",
+		"id": "class:h8tazjzpgnf79w139rvm",
+		"lectio_id": "47909084316",
+		"name": "3c",
+		"school": "school:eg",
+		"student_count": 27
+	},
+	{
+		"created_at": "2023-01-26T09:44:43.128603600Z",
+		"id": "class:hafnbj0cug82cazwnud0",
+		"lectio_id": "47909084423",
+		"name": "3j",
+		"school": "school:eg",
+		"student_count": 25
+	},
+	{
+		"created_at": "2023-01-26T09:43:02.952382200Z",
+		"id": "class:i4woe643o7qd1cie8314",
+		"lectio_id": "49800176175",
+		"name": "2a",
+		"school": "school:eg",
+		"student_count": 28
+	},
+	{
+		"created_at": "2023-01-26T09:44:32.089985600Z",
+		"id": "class:ias8259y6reu52g3vson",
+		"lectio_id": "47909089944",
+		"name": "3e",
+		"school": "school:eg",
+		"student_count": 29
+	},
+	{
+		"created_at": "2023-01-26T09:43:34.694125400Z",
+		"id": "class:id3lg80akvv8cp4cdi56",
+		"lectio_id": "49800185436",
+		"name": "2j",
+		"school": "school:eg",
+		"student_count": 26
+	},
+	{
+		"created_at": "2023-01-26T09:44:37.540281900Z",
+		"id": "class:ieav6od9xfj5f5er9xpj",
+		"lectio_id": "47909084624",
+		"name": "3f",
+		"school": "school:eg",
+		"student_count": 29
+	},
+	{
+		"created_at": "2023-01-26T09:43:45.850713400Z",
+		"id": "class:j0a8jlu6rz53pr0vxe70",
+		"lectio_id": "49800194667",
+		"name": "2l",
+		"school": "school:eg",
+		"student_count": 27
+	},
+	{
+		"created_at": "2023-01-26T09:45:18.718723200Z",
+		"id": "class:jero6u6s39q5ya4a6g6x",
+		"lectio_id": "54122930356",
+		"name": "1p",
+		"school": "school:eg",
+		"student_count": 27
+	},
+	{
+		"created_at": "2023-01-26T09:45:13.663010100Z",
+		"id": "class:k5s7shvni1vuniml57xn",
+		"lectio_id": "47909084956",
+		"name": "3u",
+		"school": "school:eg",
+		"student_count": 28
+	},
+	{
+		"created_at": "2023-01-26T09:44:57.289071900Z",
+		"id": "class:l803aklsv9fxlg8risxm",
+		"lectio_id": "47909084937",
+		"name": "3m",
+		"school": "school:eg",
+		"student_count": 30
+	},
+	{
+		"created_at": "2023-01-26T09:43:14.132073800Z",
+		"id": "class:lhylwuskoae9mk4v0fwu",
+		"lectio_id": "49800178734",
+		"name": "2c",
+		"school": "school:eg",
+		"student_count": 25
+	},
+	{
+		"created_at": "2023-01-26T09:43:24.132937700Z",
+		"id": "class:mohvbt0tyfk81ahjx5j0",
+		"lectio_id": "49800183199",
+		"name": "2e",
+		"school": "school:eg",
+		"student_count": 27
+	},
+	{
+		"created_at": "2023-01-26T09:41:51.784895900Z",
+		"id": "class:na74yegjdcccxbvi269l",
+		"lectio_id": "52943731672",
+		"name": "1d",
+		"school": "school:eg",
+		"student_count": 29
+	},
+	{
+		"created_at": "2023-01-26T09:42:56.849687400Z",
+		"id": "class:nf0jtmf6v5oqxtqo8biv",
+		"lectio_id": "52943742924",
+		"name": "1u",
+		"school": "school:eg",
+		"student_count": 29
+	},
+	{
+		"created_at": "2023-01-26T09:45:28.906675500Z",
+		"id": "class:nn4dz40do0iliwmqvdt7",
+		"lectio_id": "47909089049",
+		"name": "2p",
+		"school": "school:eg",
+		"student_count": 21
+	},
+	{
+		"created_at": "2023-01-26T09:43:56.891387700Z",
+		"id": "class:nqs7ssjps0k43hl8w52x",
+		"lectio_id": "49800189440",
+		"name": "2n",
+		"school": "school:eg",
+		"student_count": 25
+	},
+	{
+		"created_at": "2023-01-26T09:43:29.547997600Z",
+		"id": "class:nw56pr75q6ujm8ujrv00",
+		"lectio_id": "49800183817",
+		"name": "2f",
+		"school": "school:eg",
+		"student_count": 25
+	},
+	{
+		"created_at": "2023-01-26T09:43:08.916247800Z",
+		"id": "class:q7tx73lmw193saw2y057",
+		"lectio_id": "49800177912",
+		"name": "2b",
+		"school": "school:eg",
+		"student_count": 25
+	},
+	{
+		"created_at": "2023-01-26T09:45:08.357003200Z",
+		"id": "class:raea2gfkdplzcbl6n6sa",
+		"lectio_id": "47909084333",
+		"name": "3t",
+		"school": "school:eg",
+		"student_count": 27
+	},
+	{
+		"created_at": "2023-01-26T09:45:23.737926500Z",
+		"id": "class:sdjpjv9jg2yeu8s4f94p",
+		"lectio_id": "54122939730",
+		"name": "1q",
+		"school": "school:eg",
+		"student_count": 28
+	},
+	{
+		"created_at": "2023-01-26T09:41:36.056022200Z",
+		"id": "class:t0cc2zktchao14re4vms",
+		"lectio_id": "52943723189",
+		"name": "1a",
+		"school": "school:eg",
+		"student_count": 24
+	},
+	{
+		"created_at": "2023-01-26T09:45:33.570479700Z",
+		"id": "class:t4z57gfnh1ik6a8vi3rr",
+		"lectio_id": "48336682741",
+		"name": "2q",
+		"school": "school:eg",
+		"student_count": 17
+	},
+	{
+		"created_at": "2023-01-26T09:44:53.328046800Z",
+		"id": "class:thozlugaqz68933da5to",
+		"lectio_id": "47909091274",
+		"name": "3l",
+		"school": "school:eg",
+		"student_count": 15
+	},
+	{
+		"created_at": "2023-01-26T09:42:21.338710500Z",
+		"id": "class:vpp3x8gehqkmsahf3kq3",
+		"lectio_id": "52943735169",
+		"name": "1j",
+		"school": "school:eg",
+		"student_count": 30
+	},
+	{
+		"created_at": "2023-01-26T09:45:03.037450300Z",
+		"id": "class:xcy3hxd453lay6ziyejx",
+		"lectio_id": "47909084407",
+		"name": "3n",
+		"school": "school:eg",
+		"student_count": 26
+	},
+	{
+		"created_at": "2023-01-26T09:41:46.318735300Z",
+		"id": "class:y2dhwb82u6nsk7l60gu1",
+		"lectio_id": "52943730320",
+		"name": "1c",
+		"school": "school:eg",
+		"student_count": 28
+	},
+	{
+		"created_at": "2023-01-26T09:43:40.767711600Z",
+		"id": "class:yr4duovbibp4zpute0zk",
+		"lectio_id": "49800187569",
+		"name": "2k",
+		"school": "school:eg",
+		"student_count": 24
+	},
+	{
+		"created_at": "2023-01-26T09:44:06.859546400Z",
+		"id": "class:z67v6ls5min2z7rwyhc1",
+		"lectio_id": "49800191416",
+		"name": "2u",
+		"school": "school:eg",
+		"student_count": 27
+	},
+	{
+		"created_at": "2023-01-26T09:44:17.058570Z",
+		"id": "class:zttjwn7b8hxyxuisa21y",
+		"lectio_id": "47909090968",
+		"name": "3b",
+		"school": "school:eg",
+		"student_count": 23
+	}
+]
