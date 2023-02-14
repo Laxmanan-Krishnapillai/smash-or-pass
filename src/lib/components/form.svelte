@@ -2,7 +2,6 @@
 	import { enhance } from '$app/forms';
 	let form: HTMLFormElement;
 	import { goto } from '$app/navigation';
-	import { cirql } from '$lib/server/db';
 	let username = '';
 	let password = '';
 </script>
