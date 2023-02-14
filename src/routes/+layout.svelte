@@ -16,7 +16,7 @@
 		const token = document.cookie.split('token=')[1].split(';')[0];
 		console.log(token);
 		if (!token) goto('/login');
-		if (!cirql.options.credentials) await cirql.signIn({ token });
+		if (cirql.options.credentials === undefined) await cirql.signIn({ token });
 	});
 </script>
 

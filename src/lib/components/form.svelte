@@ -2,6 +2,7 @@
 	import { enhance } from '$app/forms';
 	let form: HTMLFormElement;
 	import { goto } from '$app/navigation';
+	import { cirql } from '$lib/server/db';
 	let username = '';
 	let password = '';
 </script>
@@ -12,6 +13,7 @@
 		use:enhance={({ form, data, action, cancel }) => {
 			return async ({ result, update }) => {
 				console.log(result);
+				const token = document.cookie.split('token=')[1].split(';')[0];
 				goto('/');
 			};
 		}}
