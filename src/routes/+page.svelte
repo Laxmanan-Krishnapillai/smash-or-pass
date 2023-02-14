@@ -18,15 +18,40 @@
 			await cirql.ready();
 			if (!cirql.options.credentials) {
 				await cirql.signIn({ token });
+				classes = (
+					await cirql.execute({
+						query: select('name').from('class'),
+						schema: ClassSchema.pick({ name: true })
+					})
+				).map((c) => c.name);
+				console.log(classes);
 			}
+			classes = (
+				await cirql.execute({
+					query: select('name').from('class'),
+					schema: ClassSchema.pick({ name: true })
+				})
+			).map((c) => c.name);
+			console.log(classes);
 		}
-		classes = (
-			await cirql.execute({
-				query: select('name').from('class'),
-				schema: ClassSchema.pick({ name: true })
-			})
-		).map((c) => c.name);
-		console.log(classes);
+		if (cirql.options.credentials) {
+			classes = (
+				await cirql.execute({
+					query: select('name').from('class'),
+					schema: ClassSchema.pick({ name: true })
+				})
+			).map((c) => c.name);
+			console.log(classes);
+		} else {
+			await cirql.signIn({ token });
+			classes = (
+				await cirql.execute({
+					query: select('name').from('class'),
+					schema: ClassSchema.pick({ name: true })
+				})
+			).map((c) => c.name);
+			console.log(classes);
+		}
 	});
 	let val = '';
 	const students = writable<Student[]>([]);

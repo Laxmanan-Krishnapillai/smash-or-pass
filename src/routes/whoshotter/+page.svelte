@@ -46,10 +46,20 @@
 			await cirql.ready();
 			if (!cirql.options.credentials) {
 				await cirql.signIn({ token });
+				const students = await getrandomstudents(2, $isChecked);
+				console.log(students);
 			}
+			const students = await getrandomstudents(2, $isChecked);
+			console.log(students);
 		}
-		const students = await getrandomstudents(2, $isChecked);
-		console.log(students);
+		if (cirql.options.credentials) {
+			const students = await getrandomstudents(2, $isChecked);
+			console.log(students);
+		} else {
+			await cirql.signIn({ token });
+			const students = await getrandomstudents(2, $isChecked);
+			console.log(students);
+		}
 	});
 	const vote = async (winner: string, loser: string) => {
 		const res = await cirql.execute({

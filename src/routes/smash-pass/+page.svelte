@@ -67,16 +67,44 @@
 			await cirql.ready();
 			if (!cirql.options.credentials) {
 				await cirql.signIn({ token });
+				const before = (
+					await cirql.execute({
+						query: select('out').from('voted_on'),
+						schema: VotedOnSchema.pick({ out: true })
+					})
+				).map((v) => v.out);
+				votedOnBefore.set(before);
+				setStudent($isChecked);
 			}
+			const before = (
+				await cirql.execute({
+					query: select('out').from('voted_on'),
+					schema: VotedOnSchema.pick({ out: true })
+				})
+			).map((v) => v.out);
+			votedOnBefore.set(before);
+			setStudent($isChecked);
 		}
-		const before = (
-			await cirql.execute({
-				query: select('out').from('voted_on'),
-				schema: VotedOnSchema.pick({ out: true })
-			})
-		).map((v) => v.out);
-		votedOnBefore.set(before);
-		setStudent($isChecked);
+		if (!cirql.options.credentials) {
+			await cirql.signIn({ token });
+			const before = (
+				await cirql.execute({
+					query: select('out').from('voted_on'),
+					schema: VotedOnSchema.pick({ out: true })
+				})
+			).map((v) => v.out);
+			votedOnBefore.set(before);
+			setStudent($isChecked);
+		} else {
+			const before = (
+				await cirql.execute({
+					query: select('out').from('voted_on'),
+					schema: VotedOnSchema.pick({ out: true })
+				})
+			).map((v) => v.out);
+			votedOnBefore.set(before);
+			setStudent($isChecked);
+		}
 		uid = decodeURIComponent(document.cookie)
 			.split(';')
 			.find((c) => c.includes('uid'))
