@@ -17,7 +17,9 @@
 		const val2 = val2_check === val1 ? val2_check + 1 : val2_check;
 		const res = await cirql.batch(
 			{
-				query: query(`SELECT * FROM student WHERE gender == $genderlimit 1 start ${val1}`).single(),
+				query: query(
+					`SELECT * FROM student WHERE gender == $gender limit 1 start ${val1}`
+				).single(),
 				schema: StudentSchema,
 				params: {
 					gender: gender ? 'female' : 'male'
@@ -25,10 +27,10 @@
 			},
 			{
 				query: query(
-					`SELECT * FROM student WHERE gender == $gender limit 1 start ${val2}`
+					`SELECT * FROM student WHERE gender == $fender limit 1 start ${val2}`
 				).single(),
 				params: {
-					gender: gender ? 'female' : 'male'
+					fender: gender ? 'female' : 'male'
 				},
 
 				schema: StudentSchema
@@ -72,9 +74,12 @@
 		});
 		console.log(res);
 		const students = await getrandomstudents(2, $isChecked);
+		console.log(students);
 	};
 	isChecked.subscribe(async (val) => {
+		await cirql.ready();
 		const students = await getrandomstudents(2, val);
+		console.log(students);
 	});
 </script>
 

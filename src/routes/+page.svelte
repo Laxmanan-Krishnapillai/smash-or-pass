@@ -71,7 +71,7 @@
 							`SELECT * FROM student WHERE ${
 								val.length > 0 ? `string::startsWith(name, $val) AND` : ''
 							} gender == $gender ${
-								activeClass.length > 0 ? `AND class.name inside activeClass` : ''
+								activeClass.length > 0 ? `AND class.name inside $activeClass` : ''
 							}`
 						),
 						schema: StudentSchema,

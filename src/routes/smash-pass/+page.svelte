@@ -3,7 +3,7 @@
 	import Switch from '$lib/components/switch.svelte';
 	import { cirql } from '$lib/db';
 	import { StudentSchema, VotedOnSchema, type Student } from '$lib/schema';
-	import { eq, notInside, relate, select } from 'cirql';
+	import { eq, notInside, query, relate, select } from 'cirql';
 	import { browser } from '$app/environment';
 	import { onMount } from 'svelte';
 	import { writable } from 'svelte/store';
@@ -25,9 +25,15 @@
 	const votedOnBefore = writable<string[]>(initialValue);
 	const vote = async (vote: boolean) => {
 		if ($student === null) return;
+		console.log($student.id, vote, uid);
 		const res = await cirql.execute({
 			query: relate(uid, 'voted_on', $student.id).set('vote', vote),
-			schema: VotedOnSchema
+			schema: VotedOnSchema,
+			params: {
+				uid,
+				id: $student.id,
+				vote: vote ? 'true' : 'false'
+			}
 		});
 		console.log(res);
 		votedOnBefore.update((value) => [...value, $student.id]);
@@ -47,8 +53,9 @@
 		if (res.length === 0) return;
 		student.set(res[0]);
 	};
-	isChecked.subscribe((value) => {
+	isChecked.subscribe(async (value) => {
 		console.log(value);
+		await cirql.ready();
 		setStudent(value);
 	});
 	votedOnBefore.subscribe((value) => {

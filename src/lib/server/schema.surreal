@@ -51,7 +51,7 @@ DEFINE FIELD lectio_id ON TABLE school TYPE string ASSERT $value != NONE;
 DEFINE FIELD name ON TABLE school TYPE string ASSERT $value != NONE;
 DEFINE FIELD created_at ON TABLE school TYPE datetime VALUE time::now();
 
-DEFINE TABLE voted_on SCHEMAFULL PERMISSIONS FOR CREATE WHERE $token.id == in FOR SELECT WHERE $token.id != NONE, FOR UPDATE NONE, FOR DELETE NONE;
+DEFINE TABLE voted_on SCHEMAFULL PERMISSIONS FOR CREATE WHERE $token.id == in.id FOR SELECT WHERE $token.id != NONE, FOR UPDATE NONE, FOR DELETE NONE;
 DEFINE FIELD created_at ON TABLE voted_on TYPE datetime VALUE time::now();
 DEFINE FIELD in ON TABLE voted_on TYPE record (student);
 DEFINE FIELD out ON TABLE voted_on TYPE record (student);
