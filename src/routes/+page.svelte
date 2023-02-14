@@ -4,7 +4,6 @@
 	import { writable } from 'svelte/store';
 	import Image from '$lib/components/image.svelte';
 	import { InputChip } from '@skeletonlabs/skeleton';
-	import { goto } from '$app/navigation';
 	import { ClassSchema, StudentSchema, type Student } from '$lib/schema';
 	import { query, select } from 'cirql';
 	let imgcontainer: HTMLElement;
@@ -36,17 +35,12 @@
 					await cirql.execute({
 						query: query(
 							`SELECT * FROM student WHERE ${
-								val.length > 0 ? 'string::startsWith(name, $val) AND' : ''
+								val.length > 0 ? `string::startsWith(name, ${val}) AND` : ''
 							} gender == $gender ${
-								activeClass.length > 0 ? 'AND class.name inside $activeClass' : ''
+								activeClass.length > 0 ? `AND class.name inside ${activeClass}` : ''
 							}`
 						),
-						schema: StudentSchema,
-						params: {
-							val,
-							gender,
-							activeClass
-						}
+						schema: StudentSchema
 					})
 				).filter((student) => student !== undefined);
 				students.set(newStudents);

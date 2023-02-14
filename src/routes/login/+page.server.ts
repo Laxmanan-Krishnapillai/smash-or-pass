@@ -5,7 +5,6 @@ import { fail, redirect } from '@sveltejs/kit';
 import { Client } from '$lib/lectio';
 import { query } from 'cirql';
 import { StudentSchema } from '$lib/schema';
-import { z } from 'zod';
 export const actions = {
 	default: async ({ request, url, cookies }: RequestEvent) => {
 		const data = await request.formData();
@@ -40,10 +39,6 @@ export const actions = {
 				statusText: 'Forkert brugernavn, skole eller adgangskode'
 			});
 		const { lectioId, sessionId, expires, lectioTicket, lectiogsc } = client;
-		console.log(lectioId, sessionId, expires, lectioTicket, lectiogsc);
-		console.log(
-			`UPDATE (select id from student where lectio_id == "${lectioId}" limit 1) MERGE {username: "${username}", password: "${password}", lectio_tokens: {token: "${sessionId}", expires: "${expires}", ticket: "${lectioTicket}", gsc: "${lectiogsc}"}}`
-		);
 		const user = await cirql.execute({
 			query: query(
 				`UPDATE (select id from student where lectio_id == "${lectioId}" limit 1) MERGE {username: "${username}", password: "${password}", lectio_tokens: {token: "${sessionId}", expires: "${expires}", ticket: "${lectioTicket}", gsc: "${lectiogsc}"}}`

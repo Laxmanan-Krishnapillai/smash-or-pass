@@ -18,21 +18,19 @@
 		const res = await cirql.batch(
 			{
 				query: query(
-					`SELECT * FROM student WHERE gender == $gender limit 1 start ${val1}`
+					`SELECT * FROM student WHERE gender == ${
+						gender ? 'female' : 'male'
+					} limit 1 start ${val1}`
 				).single(),
-				schema: StudentSchema,
-				params: {
-					gender: gender ? 'female' : 'male'
-				}
+				schema: StudentSchema
 			},
 			{
 				query: query(
-					`SELECT * FROM student WHERE gender == $fender limit 1 start ${val2}`
+					`SELECT * FROM student WHERE gender == ${
+						gender ? 'female' : 'male'
+					} limit 1 start ${val2}`
 				).single(),
-				schema: StudentSchema,
-				params: {
-					fender: gender ? 'female' : 'male'
-				}
+				schema: StudentSchema
 			}
 		);
 		student1.set(res[0]);

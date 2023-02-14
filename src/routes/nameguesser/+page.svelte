@@ -19,7 +19,6 @@
 		active.set(res[0]);
 	};
 	onMount(async () => {
-		await cirql.ready();
 		await getStudents();
 	});
 	const active = writable<Student | null>(null);

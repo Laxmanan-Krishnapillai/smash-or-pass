@@ -26,11 +26,8 @@
 	const vote = async (vote: boolean) => {
 		if ($student === null) return;
 		const res = await cirql.execute({
-			query: relate(uid, 'voted_on', '$student').set('vote', vote),
-			schema: VotedOnSchema,
-			params: {
-				student: $student.id
-			}
+			query: relate(uid, 'voted_on', $student.id).set('vote', vote),
+			schema: VotedOnSchema
 		});
 		console.log(res);
 		votedOnBefore.update((value) => [...value, $student.id]);
