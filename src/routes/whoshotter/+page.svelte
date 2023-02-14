@@ -43,10 +43,10 @@
 		console.log(token);
 		if (!cirql.isConnected) {
 			await cirql.connect();
-		}
-		await cirql.ready();
-		if (!cirql.options.credentials) {
-			await cirql.signIn({ token });
+			await cirql.ready();
+			if (!cirql.options.credentials) {
+				await cirql.signIn({ token });
+			}
 		}
 		const students = await getrandomstudents(2, $isChecked);
 		console.log(students);
