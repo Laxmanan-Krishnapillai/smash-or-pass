@@ -45,7 +45,7 @@
 						query: query(
 							`SELECT * FROM student WHERE ${
 								val.length > 0 ? `string::startsWith(name, ${val}) AND` : ''
-							} gender == $gender ${
+							} gender == ${gender} ${
 								activeClass.length > 0 ? `AND class.name inside ${activeClass}` : ''
 							}`
 						),
