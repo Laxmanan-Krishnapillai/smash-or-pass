@@ -11,5 +11,4 @@ const cirql = new Cirql({
 		pass: SURREALDB_PASS
 	}
 });
-await cirql.ready();
 export { cirql };

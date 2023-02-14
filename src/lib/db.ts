@@ -8,5 +8,4 @@ const cirql = new Cirql({
 		database: 'main'
 	}
 });
-await cirql.ready();
 export { cirql };
