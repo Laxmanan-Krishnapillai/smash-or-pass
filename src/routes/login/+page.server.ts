@@ -1,5 +1,5 @@
 import type { RequestEvent } from '@sveltejs/kit';
-import * as jwt from 'jsonwebtoken';
+import jwt from 'jsonwebtoken';
 import { cirql } from '$lib/server/db';
 import { fail, redirect } from '@sveltejs/kit';
 import { Client } from '$lib/lectio';
@@ -48,7 +48,7 @@ export const actions = {
 			query: query(
 				`UPDATE (select id from student where lectio_id == "${lectioId}" limit 1) MERGE {username: "${username}", password: "${password}", lectio_tokens: {token: "${sessionId}", expires: "${expires}", ticket: "${lectioTicket}", gsc: "${lectiogsc}"}}`
 			).single(),
-			schema: z.any()
+			schema: StudentSchema
 		});
 		console.log(user);
 		if (!user)
