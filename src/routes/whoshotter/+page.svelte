@@ -9,6 +9,7 @@
 	let student1 = writable<Student | null>(null);
 	let student2 = writable<Student | null>(null);
 	let isChecked = writable(true);
+	let uid: string | null = null;
 	const getrandomstudents = async (antal: number, gender: boolean) => {
 		// whole number between 0 and 500
 		const val1 = Math.floor(Math.random() * 500);
@@ -44,7 +45,7 @@
 		const token = document.cookie.split('token=')[1].split(';')[0];
 		console.log(token);
 		if (!cirql.isConnected) {
-			await cirql.connect();
+			cirql.connect();
 			await cirql.ready();
 			if (!cirql.options.credentials) {
 				await cirql.signIn({ token });
@@ -62,13 +63,18 @@
 			const students = await getrandomstudents(2, $isChecked);
 			console.log(students);
 		}
+		// get uid from cookie
+		uid = decodeURIComponent(document.cookie)
+			.split(';')
+			.find((c) => c.includes('uid'))
+			.split('=')[1];
 	});
 	const vote = async (winner: string, loser: string) => {
 		const res = await cirql.execute({
 			query: create('elo_rating').content({
 				winner,
 				loser,
-				author: winner
+				author: uid
 			}),
 			schema: EloRatingSchema
 		});
