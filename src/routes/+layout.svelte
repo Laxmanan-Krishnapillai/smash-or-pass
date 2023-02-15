@@ -34,6 +34,11 @@
 			class="btn variant-filled-primary hover:variant-filled-secondary btn-sm sm:btn-base"
 			>Who's hotter?</a
 		>
+		<a
+			href="/nameguesser"
+			class="btn variant-filled-primary hover:variant-filled-secondary btn-sm sm:btn-base"
+			>Name Guesser</a
+		>
 	</span>
 	<a
 		href="/login"

@@ -13,6 +13,7 @@
 	let gameended = false;
 	let start = 0;
 	let scrore = 0;
+	let value = '';
 	const getStudents = async () => {
 		console.log(start);
 		const res = await cirql.execute({
@@ -25,7 +26,14 @@
 			params: { activeClass }
 		});
 		res.length === 0 && (gameended = true);
-		students.set(res);
+		if (gameended) return;
+		students.update((s) => {
+			if (s) {
+				return [...s, ...res];
+			} else {
+				return res;
+			}
+		});
 		start++;
 		console.log(res);
 	};
@@ -36,64 +44,54 @@
 			await cirql.ready();
 			if (!cirql.options.credentials) {
 				await cirql.signIn({ token });
-				classes = (
-					await cirql.execute({
-						query: select('name').from('class'),
-						schema: ClassSchema.pick({ name: true })
-					})
-				).map((c) => c.name);
-				console.log(classes);
 			}
-			classes = (
-				await cirql.execute({
-					query: select('name').from('class'),
-					schema: ClassSchema.pick({ name: true })
-				})
-			).map((c) => c.name);
-			console.log(classes);
 		}
-		if (cirql.options.credentials) {
-			classes = (
-				await cirql.execute({
-					query: select('name').from('class'),
-					schema: ClassSchema.pick({ name: true })
-				})
-			).map((c) => c.name);
-			console.log(classes);
-		} else {
-			await cirql.signIn({ token });
-			classes = (
-				await cirql.execute({
-					query: select('name').from('class'),
-					schema: ClassSchema.pick({ name: true })
-				})
-			).map((c) => c.name);
-			console.log(classes);
-		}
+		classes = (
+			await cirql.execute({
+				query: select('name').from('class'),
+				schema: ClassSchema.pick({ name: true })
+			})
+		).map((c) => c.name);
+		console.log(classes);
+		await cirql.signIn({ token });
 	});
 	const active = writable<Student | null>(null);
-	$: if (gamestarted) {
-		getStudents();
-	}
-	let value = '';
-	students.subscribe((s) => {
-		if (s && s.length > 0) {
-			active.set(s[0]);
+	$: (async () => {
+		if (gamestarted) {
+			await cirql.ready();
+			await getStudents();
+			remove();
 		}
-		if (s && s.length === 0) {
+	})();
+	students.subscribe((s) => {
+		if (s && s.length === 0 && !gameended) {
 			getStudents();
 		}
 	});
 	const remove = () => {
 		students.update((s) => {
 			if (s) {
-				s.shift();
+				active.set(s.shift()!);
 				return s;
 			} else {
 				return null;
 			}
 		});
 	};
+	let options: null | Student[] = null;
+	active.subscribe((a) => {
+		if (a && $students) {
+			// get three random names from students with the same gender
+			options = [
+				...$students
+					.filter((val) => {
+						return val.gender === a.gender;
+					})
+					.slice(-3),
+				a
+			];
+		}
+	});
 </script>
 
 <section class="h-screen flex flex-col justify-center items-center">
@@ -113,25 +111,26 @@
 		</div>
 	{/if}
 	{#if gamestarted && !gameended}
+		<h2>scrore: {scrore}</h2>
 		<div class="h-48 block">
 			{#if $active}
 				<Image name={false} student={$active} />
 			{/if}
 		</div>
 		<input
-			class="unstyled text-black border-2 border-black mt-4 rounded-lg px-10 py-4 w-96"
+			class="unstyled text-black border-2 border-black rounded-lg px-10 py-4 w-96"
 			bind:value
 			on:keypress={async (e) => {
 				if ($active && $students)
 					if (e.key === 'Enter') {
 						if (value === $active.name.split(' ')[0]) {
 							console.log('correct');
-							value = '';
 							scrore++;
-							remove();
 						} else {
-							console.log('incorrect');
+							gameended = true;
 						}
+						value = '';
+						remove();
 					}
 			}}
 		/>
