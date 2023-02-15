@@ -70,10 +70,10 @@ export const actions = {
 		cookies.set('token', token, { path: '/', httpOnly: false });
 		cookies.set('ASP.NET_SessionId', client.sessionId, {
 			path: '/',
-			sameSite: 'lax',
 			httpOnly: false
 		});
 		cookies.set('uid', user.id, { path: '/', httpOnly: false });
+		console.log(client.sessionId);
 		console.log(user.id);
 		if (url.searchParams.has('redirectTo')) {
 			throw redirect(303, url.searchParams.get('redirectTo'));

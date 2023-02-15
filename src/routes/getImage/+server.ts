@@ -1,23 +1,11 @@
 import type { RequestHandler } from '@sveltejs/kit';
 import { Client } from '$lib/lectio';
-export const POST: RequestHandler = async ({ request }) => {
+export const POST: RequestHandler = async ({ request, cookies }) => {
 	const { id, school } = await request.json();
-	const sessionId = request.headers.get('Cookie')?.split('ASP.NET_SessionId=')[1];
-	console.log(sessionId);
-	if (!id || !school) return new Response('Missing parameters', { status: 400 });
-	if (!sessionId) {
-		const client = new Client({
-			username: 'siva0077',
-			password: '00TestKedel.',
-			schoolId: '57'
-		});
-		const worked = await client.authenticate();
-		return new Response(await getImage(id, school, client.sessionId), {
-			headers: { Cookie: 'ASP.NET_SessionId=' + client.sessionId }
-		});
-	} else {
-		return new Response(await getImage(id, school, sessionId));
-	}
+	console.log(id, school);
+	const sessionId = cookies.get('ASP.NET_SessionId');
+	if (!id || !school || !sessionId) return new Response('Missing parameters', { status: 400 });
+	return new Response(await getImage(id, school, sessionId));
 };
 
 const getImage = async (imageId: string, school: string, sessionId: string) => {

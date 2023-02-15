@@ -7,14 +7,13 @@
 	import { goto } from '$app/navigation';
 	import { fly } from 'svelte/transition';
 	import { onMount } from 'svelte';
-	import { CirqlStateless } from 'cirql';
 	import { cirql } from '$lib/db';
 	let visible = false;
 	onMount(async () => {
 		if (!localStorage.getItem('cookie')) {
 			visible = true;
 		}
-		const token = document.cookie.split('token=')[1].split(';')[0];
+		const token = document.cookie.split('token=')[1];
 		if (!token) goto('/login');
 	});
 	export { cirql };
