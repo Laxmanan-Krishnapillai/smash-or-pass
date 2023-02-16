@@ -10,3 +10,4 @@ const cirql = new Cirql({
 	}
 });
 export { cirql };
+export const dbready = writable(false);

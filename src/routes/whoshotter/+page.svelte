@@ -3,12 +3,35 @@
 	import { cirql } from '$lib/db';
 	import { query, create } from 'cirql';
 	import Switch from '$lib/components/switch.svelte';
-	import { type Student, StudentSchema, EloRatingSchema, VotedOnSchema } from '$lib/schema';
+	import { type Student, StudentSchema, EloRatingSchema } from '$lib/schema';
+	import { Paginator } from '@skeletonlabs/skeleton';
 	import Image from '$lib/components/image.svelte';
 	import { writable } from 'svelte/store';
+	import { dbready } from '$lib/db';
 	let student1 = writable<Student | null>(null);
 	let student2 = writable<Student | null>(null);
 	let isChecked = writable(true);
+	let rank: null | Student[] = null;
+	let settings = {
+		offset: 0,
+		limit: 2,
+		size: 1000,
+		amounts: [1, 2, 5, 10]
+	};
+	const updaterank = async () => {
+		const res = await cirql.execute({
+			query: query(
+				`SELECT * FROM student WHERE gender == $gender ORDER BY elo DESC LIMIT ${
+					settings.limit
+				} START ${settings.offset * settings.limit}`
+			),
+			schema: StudentSchema,
+			params: {
+				gender: $isChecked ? 'female' : 'male'
+			}
+		});
+		rank = res;
+	};
 	let uid: string | null = null;
 	const getrandomstudents = async (antal: number, gender: boolean) => {
 		// whole number between 0 and 500
@@ -42,32 +65,18 @@
 		return res;
 	};
 	onMount(async () => {
-		const token = document.cookie.split('token=')[1].split(';')[0];
-		console.log(token);
-		if (!cirql.isConnected) {
-			cirql.connect();
-			await cirql.ready();
-			if (!cirql.options.credentials) {
-				await cirql.signIn({ token });
-				const students = await getrandomstudents(2, $isChecked);
-				console.log(students);
-			}
-			const students = await getrandomstudents(2, $isChecked);
-			console.log(students);
-		}
-		if (cirql.options.credentials) {
-			const students = await getrandomstudents(2, $isChecked);
-			console.log(students);
-		} else {
-			await cirql.signIn({ token });
-			const students = await getrandomstudents(2, $isChecked);
-			console.log(students);
-		}
 		// get uid from cookie
 		uid = decodeURIComponent(document.cookie)
 			.split(';')
 			.find((c) => c.includes('uid'))
 			.split('=')[1];
+	});
+	dbready.subscribe(async (val) => {
+		if (val) {
+			await getrandomstudents(2, $isChecked);
+			console.log($isChecked);
+			await updaterank();
+		}
 	});
 	const vote = async (winner: string, loser: string) => {
 		const res = await cirql.execute({
@@ -85,7 +94,7 @@
 	isChecked.subscribe(async (val) => {
 		await cirql.ready();
 		const students = await getrandomstudents(2, val);
-		console.log(students);
+		await updaterank();
 	});
 </script>
 
@@ -103,4 +112,27 @@
 			{/if}
 		</button>
 	</div>
+</section>
+<section class="flex flex-col h-screen px-20 gap-4">
+	<h1>Rank</h1>
+	<Paginator
+		on:page={async () => {
+			await updaterank();
+		}}
+		on:amount={async () => {
+			await updaterank();
+		}}
+		bind:settings
+	/>
+	{#if rank}
+		{#each rank as student}
+			<div class="flex items-center gap-4">
+				<div class="w-36 h-48 bg-gray-600 rounded-xl">
+					<Image name={false} {student} />
+				</div>
+				<p>{student.name}</p>
+				<p>{student.elo}</p>
+			</div>
+		{/each}
+	{/if}
 </section>

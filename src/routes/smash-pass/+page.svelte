@@ -7,6 +7,7 @@
 	import { browser } from '$app/environment';
 	import { onMount } from 'svelte';
 	import { writable } from 'svelte/store';
+	import { dbready } from '$lib/db';
 	let isChecked = writable(true);
 	// parse uid from cookie
 	let uid: string;
@@ -67,63 +68,25 @@
 		}
 	});
 	onMount(async () => {
-		const token = document.cookie.split('token=')[1].split(';')[0];
-		console.log(token);
-		if (!cirql.isConnected) {
-			await cirql.connect();
-			await cirql.ready();
-			if (!cirql.options.credentials) {
-				await cirql.signIn({ token });
-				const before = (
-					await cirql.execute({
-						query: select('out').from('voted_on'),
-						schema: VotedOnSchema.pick({ out: true })
-					})
-				).map((v) => v.out);
-				votedOnBefore.set(before);
-				setStudent($isChecked);
-			}
-			const before = (
-				await cirql.execute({
-					query: select('out').from('voted_on'),
-					schema: VotedOnSchema.pick({ out: true })
-				})
-			).map((v) => v.out);
-			votedOnBefore.set(before);
-			setStudent($isChecked);
-		}
-		if (!cirql.options.credentials) {
-			await cirql.signIn({ token });
-			const before = (
-				await cirql.execute({
-					query: select('out').from('voted_on'),
-					schema: VotedOnSchema.pick({ out: true })
-				})
-			).map((v) => v.out);
-			votedOnBefore.set(before);
-			setStudent($isChecked);
-		} else {
-			const before = (
-				await cirql.execute({
-					query: select('out').from('voted_on'),
-					schema: VotedOnSchema.pick({ out: true })
-				})
-			).map((v) => v.out);
-			votedOnBefore.set(before);
-			setStudent($isChecked);
-		}
 		uid = decodeURIComponent(document.cookie)
 			.split(';')
 			.find((c) => c.includes('uid'))
 			.split('=')[1];
 	});
+	dbready.subscribe(async (value) => {
+		if (value) {
+			setStudent($isChecked);
+		}
+	});
 </script>
 
 <section class="mx-auto max-w-min flex p-2 gap-2 flex-col items-center h-screen justify-center">
 	<Switch bind:isChecked />
-	{#if $student !== null}
-		<Image scale={2} name={false} student={$student} />
-	{/if}
+	<div class="w-72 h-96 bg-gray-600 rounded-xl">
+		{#if $student !== null}
+			<Image scale={2} name={false} student={$student} />
+		{/if}
+	</div>
 	<span class="flex justify-between w-full"
 		><button on:click={() => vote(true)} class="btn variant-filled-secondary !bg-white rounded-lg"
 			><span

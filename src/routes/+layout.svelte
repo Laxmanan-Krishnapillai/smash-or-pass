@@ -8,13 +8,31 @@
 	import { fly } from 'svelte/transition';
 	import { onMount } from 'svelte';
 	import { cirql } from '$lib/db';
+	import { writable } from 'svelte/store';
+	import { dbready } from '$lib/db';
 	let visible = false;
 	onMount(async () => {
 		if (!localStorage.getItem('cookie')) {
 			visible = true;
 		}
-		const token = document.cookie.split('token=')[1];
+		const token = document.cookie.split('token=')[1].split(';')[0];
 		if (!token) goto('/login');
+		console.log(token);
+		if (!cirql.isConnected) {
+			cirql.connect();
+			await cirql.ready();
+			if (!cirql.options.credentials) {
+				await cirql.signIn({ token });
+				dbready.set(true);
+			}
+			dbready.set(true);
+		}
+		if (cirql.options.credentials) {
+			dbready.set(true);
+		} else {
+			await cirql.signIn({ token });
+			dbready.set(true);
+		}
 	});
 	export { cirql };
 </script>
