@@ -103,12 +103,26 @@
 	<div class="flex gap-4">
 		<button on:click={() => $student1 && $student2 && vote($student1.id, $student2.id)}>
 			{#if $student1}
-				<Image name={false} student={$student1} />
+				<!-- <Image name={false} student={$student1} /> -->
+				<div class="flex flex-col h-48 w-36">
+					<img
+						class="object-cover rounded-xl"
+						src="/images/{$student1.picture_id}.jpg"
+						alt="placeholder"
+					/>
+				</div>
 			{/if}
 		</button>
 		<button on:click={() => $student1 && $student2 && vote($student2.id, $student1.id)}>
 			{#if $student2}
-				<Image name={false} student={$student2} />
+				<!-- <Image name={false} student={$student2} /> -->
+				<div class="flex flex-col h-48 w-36">
+					<img
+						class="object-cover rounded-xl"
+						src="/images/{$student2.picture_id}.jpg"
+						alt="placeholder"
+					/>
+				</div>
 			{/if}
 		</button>
 	</div>

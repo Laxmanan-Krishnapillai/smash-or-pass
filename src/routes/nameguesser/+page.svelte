@@ -114,7 +114,14 @@
 		<h2>scrore: {scrore}</h2>
 		<div class="h-48 block">
 			{#if $active}
-				<Image name={false} student={$active} />
+				<!-- <Image name={false} student={$active} /> -->
+				<div class="flex flex-col h-48 w-36">
+					<img
+						class="object-cover rounded-xl"
+						src="/images/{$active.picture_id}.jpg"
+						alt="placeholder"
+					/>
+				</div>
 			{/if}
 		</div>
 		<input
