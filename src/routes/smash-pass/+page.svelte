@@ -86,7 +86,7 @@
 		{#if $student !== null}
 			<!-- <Image scale={2} name={false} student={$student} /> -->
 			<img
-				class="object-cover rounded-xl"
+				class="object-cover w-72 h-96 rounded-xl"
 				src="/images/{$student.picture_id}.jpg"
 				alt="placeholder"
 			/>
