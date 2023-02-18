@@ -115,7 +115,7 @@
 		<div class="h-48 block">
 			{#if $active}
 				<!-- <Image name={false} student={$active} /> -->
-				<div class="flex flex-col h-48 w-36">
+				<div class="flex flex-col h-48 w-36 bg-gray-600">
 					<img
 						class="object-cover rounded-xl"
 						src="/images/{$active.picture_id}.jpg"

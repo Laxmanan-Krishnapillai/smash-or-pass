@@ -85,13 +85,11 @@
 	<div class="w-72 h-96 bg-gray-600 rounded-xl">
 		{#if $student !== null}
 			<!-- <Image scale={2} name={false} student={$student} /> -->
-			<div class="flex flex-col h-96 w-72">
-				<img
-					class="object-cover rounded-xl"
-					src="/images/{$student.picture_id}.jpg"
-					alt="placeholder"
-				/>
-			</div>
+			<img
+				class="object-cover rounded-xl"
+				src="/images/{$student.picture_id}.jpg"
+				alt="placeholder"
+			/>
 		{/if}
 	</div>
 	<span class="flex justify-between w-full"
