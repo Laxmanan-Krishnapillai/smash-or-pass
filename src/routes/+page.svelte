@@ -101,7 +101,7 @@
 	</span>
 </section>
 <section
-	class="grid grid-cols-[repeat(auto-fit,_180px)] justify-center gap-3 px-20"
+	class="grid grid-cols-[repeat(auto-fit,_180px)] justify-center gap-3 md:p-20"
 	bind:this={imgcontainer}
 	id="images"
 >
