@@ -106,7 +106,7 @@
 	id="images"
 >
 	{#each $students as student, i}
-		{#if i < 15}
+		<!-- {#if i < 15}
 			<Image {student} />
 		{:else}
 			{#await new Promise((r) => setTimeout(r, 100 * i))}
@@ -114,7 +114,14 @@
 			{:then}
 				<Image {student} />
 			{/await}
-		{/if}
+		{/if} -->
+		<div class="flex flex-col h-48 w-36">
+			<img
+				class="object-cover rounded-xl"
+				src="/images/{student.picture_id}.jpg"
+				alt="placeholder"
+			/>
+		</div>
 	{/each}
 </section>
 

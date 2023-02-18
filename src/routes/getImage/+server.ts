@@ -1,5 +1,6 @@
 import type { RequestHandler } from '@sveltejs/kit';
 import { Client } from '$lib/lectio';
+import { writeFile } from 'fs/promises';
 export const POST: RequestHandler = async ({ request, cookies }) => {
 	const { id, school } = await request.json();
 	const sessionId = cookies.get('ASP.NET_SessionId');
@@ -16,8 +17,17 @@ const getImage = async (imageId: string, school: string, sessionId: string) => {
 			}
 		}
 	)
-		.then((res) => {
-			return res.blob();
+		.then(async (res) => {
+			if (!res.ok) throw new Error('Failed to fetch image');
+			// save image to file
+			const temp = res;
+			const buffer = await temp.arrayBuffer();
+			// prefix path with full path to project root
+			writeFile(
+				`C:/Users/Lenovo/Desktop/dev/surreal-lectio-skeleton/src/public/images/${imageId}.jpg`,
+				Buffer.from(buffer)
+			);
+			return temp.blob();
 		})
 		.catch((error) => {
 			throw error;
