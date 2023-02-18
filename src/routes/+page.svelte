@@ -115,7 +115,7 @@
 				<Image {student} />
 			{/await}
 		{/if} -->
-		<div class="flex flex-col h-48 w-36 bg-gray-600">
+		<div class="flex flex-col h-48 w-36 bg-gray-600 rounded-xl">
 			<img
 				class="object-cover rounded-xl"
 				src="/images/{student.picture_id}.jpg"
