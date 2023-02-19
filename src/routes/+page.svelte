@@ -58,6 +58,30 @@
 	students.subscribe((im) => {
 		console.log(im);
 	});
+	isChecked.subscribe(async (gval) => {
+		if (val.length > 0 || activeClass.length > 0) {
+			const newStudents = (
+				await cirql.execute({
+					query: query(
+						`SELECT * FROM student WHERE ${
+							val.length > 0 ? `string::startsWith(name, $val) AND` : ''
+						} gender == $gender ${
+							activeClass.length > 0 ? `AND class.name inside $activeClass` : ''
+						}`
+					),
+					schema: StudentSchema,
+					params: {
+						gender: gval ? 'female' : 'male',
+						val,
+						activeClass
+					}
+				})
+			).filter((student) => student !== undefined);
+			students.set(newStudents);
+		} else {
+			students.set([]);
+		}
+	});
 </script>
 
 <section class="flex flex-col items-center justify-center gap-4 h-[80vh]">
