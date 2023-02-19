@@ -59,6 +59,7 @@
 		console.log(im);
 	});
 	isChecked.subscribe(async (gval) => {
+		gender = gval ? 'female' : 'male';
 		if (val.length > 0 || activeClass.length > 0) {
 			const newStudents = (
 				await cirql.execute({
