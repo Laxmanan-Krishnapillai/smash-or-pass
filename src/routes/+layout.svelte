@@ -10,11 +10,13 @@
 	import { cirql } from '$lib/db';
 	import { writable } from 'svelte/store';
 	import { dbready } from '$lib/db';
+	import { page } from '$app/stores';
 	let visible = false;
 	onMount(async () => {
 		if (!localStorage.getItem('cookie')) {
 			visible = true;
 		}
+		if ($page.url.pathname === '/login') return;
 		const token = document.cookie.split('token=')[1].split(';')[0];
 		if (!token) goto('/login');
 		console.log(token);

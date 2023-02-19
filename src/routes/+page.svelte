@@ -115,12 +115,15 @@
 				<Image {student} />
 			{/await}
 		{/if} -->
-		<div class="flex flex-col h-48 w-36 bg-gray-600 rounded-xl">
-			<img
-				class="object-cover rounded-xl"
-				src="/images/{student.picture_id}.jpg"
-				alt="placeholder"
-			/>
+		<div class="flex flex-col h-min w-36">
+			<div class="bg-gray-600 w-full h-48 rounded-xl">
+				<img
+					class="object-cover rounded-xl"
+					src="/images/{student.picture_id}.jpg"
+					alt="placeholder"
+				/>
+			</div>
+			<h3 class="unstyled break-words w-full">{student.name}</h3>
 		</div>
 	{/each}
 </section>

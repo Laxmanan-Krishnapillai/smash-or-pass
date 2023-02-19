@@ -2,6 +2,8 @@
 	import { enhance } from '$app/forms';
 	let form: HTMLFormElement;
 	import { goto } from '$app/navigation';
+	import { cirql } from '$lib/db';
+	import { dbready } from '$lib/db';
 	let username = '';
 	let password = '';
 </script>
@@ -13,6 +15,21 @@
 			return async ({ result, update }) => {
 				console.log(result);
 				const token = document.cookie.split('token=')[1].split(';')[0];
+				if (!cirql.isConnected) {
+					cirql.connect();
+					await cirql.ready();
+					if (!cirql.options.credentials) {
+						await cirql.signIn({ token });
+						dbready.set(true);
+					}
+					dbready.set(true);
+				}
+				if (cirql.options.credentials) {
+					dbready.set(true);
+				} else {
+					await cirql.signIn({ token });
+					dbready.set(true);
+				}
 				goto('/');
 			};
 		}}
