@@ -1,14 +1,13 @@
 <script lang="ts">
 	import { cirql } from '$lib/db';
-	import { onMount } from 'svelte';
 	import { writable } from 'svelte/store';
-	import Image from '$lib/components/image.svelte';
 	import { InputChip } from '@skeletonlabs/skeleton';
+	import Switch from '$lib/components/switch.svelte';
 	import { ClassSchema, StudentSchema, type Student } from '$lib/schema';
 	import { query, select } from 'cirql';
 	import { dbready } from '$lib/db';
-	let imgcontainer: HTMLElement;
-	let gender: 'female' | 'male' = 'female';
+	let isChecked = writable(true);
+	let gender: 'female' | 'male' = $isChecked ? 'female' : 'male';
 	let classes: string[] = [];
 	let activeClass: string[] = [];
 	dbready.subscribe(async (ready) => {
@@ -63,28 +62,7 @@
 
 <section class="flex flex-col items-center justify-center gap-4 h-[80vh]">
 	<h1 class="text-6xl font-thin text-center mb-6">Find en elev</h1>
-	<span class="flex gap-2 h-min">
-		<button
-			on:click={() => {
-				gender = 'male';
-			}}
-			class="btn {gender === 'male'
-				? 'variant-filled-secondary'
-				: 'variant-ringed-secondary'} btn-base"
-		>
-			Mand
-		</button>
-		<button
-			on:click={() => {
-				gender = 'female';
-			}}
-			class="btn {gender === 'female'
-				? 'variant-filled-secondary'
-				: 'variant-ringed-secondary'} btn-base"
-		>
-			Kvinde
-		</button>
-	</span>
+	<Switch bind:isChecked />
 	<input
 		class="unstyled text-black border-2 border-black rounded-lg px-10 py-4 w-96"
 		bind:value={val}
@@ -100,11 +78,7 @@
 		/>
 	</span>
 </section>
-<section
-	class="grid grid-cols-[repeat(auto-fit,_144px)] justify-center gap-8 md:p-20"
-	bind:this={imgcontainer}
-	id="images"
->
+<section class="grid grid-cols-[repeat(auto-fit,_144px)] justify-center gap-8 md:p-20" id="images">
 	{#each $students as student, i}
 		<!-- {#if i < 15}
 			<Image {student} />

@@ -142,7 +142,11 @@
 		{#each rank as student}
 			<div class="flex items-center gap-4">
 				<div class="w-36 h-48 bg-gray-600 rounded-xl">
-					<Image name={false} {student} />
+					<img
+						class="object-cover rounded-xl"
+						src="/images/{student.picture_id}.jpg"
+						alt="placeholder"
+					/>
 				</div>
 				<p>{student.name}</p>
 				<p>{student.elo}</p>

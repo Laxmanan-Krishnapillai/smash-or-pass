@@ -30,10 +30,10 @@ DEFINE FIELD lectio_tokens.created_at ON TABLE student TYPE datetime;
 DEFINE INDEX lectio_id ON TABLE student FIELDS lectio_id UNIQUE;
 DEFINE FIELD school ON TABLE student TYPE string VALUE "57";
 DEFINE FIELD class ON TABLE student TYPE record (class);
+DEFINE FIELD elo ON TABLE student TYPE number VALUE $value OR 1500;
 
 DEFINE INDEX username ON TABLE student FIELDS username UNIQUE;
 DEFINE INDEX picture_id ON TABLE student FIELDS picture_id UNIQUE;
-DEFINE FIELD elo ON TABLE student TYPE number VALUE $value OR 1500;
 
 DEFINE SCOPE student;
 DEFINE TOKEN student ON SCOPE student TYPE HS512 VALUE 'bD8gLl0EJQYjHkcOv9Xb+1CwnjZUBJ4sE+xg0zRtFkE=';
