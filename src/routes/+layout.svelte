@@ -8,7 +8,6 @@
 	import { fly } from 'svelte/transition';
 	import { onMount } from 'svelte';
 	import { cirql } from '$lib/db';
-	import { writable } from 'svelte/store';
 	import { dbready } from '$lib/db';
 	import { page } from '$app/stores';
 	let visible = false;
@@ -21,7 +20,6 @@
 		if (!token) goto('/login');
 		console.log(token);
 		if (!cirql.isConnected) {
-			cirql.connect();
 			await cirql.ready();
 			if (!cirql.options.credentials) {
 				await cirql.signIn({ token });
