@@ -3,7 +3,8 @@ export type Student = z.infer<typeof StudentSchema>;
 export const StudentSchema = z.object({
 	class: z.string(),
 	created_at: z.string(),
-	elo: z.number(),
+	// Elo can be string or number
+	elo: z.union([z.string(), z.number()]),
 	gender: z.enum(['male', 'female']),
 	id: z.string(),
 	lectio_id: z.string(),
