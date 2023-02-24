@@ -86,7 +86,7 @@ export const actions = {
 		);
 		console.log(token);
 		console.log(url.searchParams.get('redirectTo'));
-		cookies.set('token', token, { path: '/', httpOnly: false });
+		cookies.set('token', token, { path: '/', httpOnly: false, secure: false });
 		cookies.set('ASP.NET_SessionId', client.sessionId, {
 			path: '/',
 			httpOnly: true,
