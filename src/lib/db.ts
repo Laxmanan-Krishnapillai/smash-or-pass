@@ -1,7 +1,5 @@
-import Surreal from 'surrealdb.js';
 import { Cirql } from 'cirql';
 import { writable } from 'svelte/store';
-
 const cirql = new Cirql({
 	connection: {
 		endpoint: 'https://surrealhost.fly.dev/',
@@ -10,4 +8,5 @@ const cirql = new Cirql({
 	}
 });
 export { cirql };
+
 export const dbready = writable(false);

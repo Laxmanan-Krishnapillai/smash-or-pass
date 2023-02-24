@@ -14,7 +14,7 @@ DEFINE NS lectio;
 DEFINE DB main;
 USE NS lectio;
 USE DB main;
-DEFINE TABLE student SCHEMAFULL PERMISSIONS FOR SELECT WHERE $token.id != NONE, FOR CREATE NONE, FOR UPDATE NONE, FOR DELETE NONE;
+DEFINE TABLE student SCHEMAFULL PERMISSIONS FOR SELECT WHERE $token.id != NONE && participates == true, FOR CREATE NONE, FOR UPDATE NONE, FOR DELETE NONE;
 DEFINE FIELD username ON TABLE student TYPE string PERMISSIONS NONE;
 DEFINE FIELD password ON TABLE student TYPE string VALUE crypto::argon2::generate($value) PERMISSIONS NONE;
 DEFINE FIELD lectio_id ON TABLE student TYPE string ASSERT $value != NONE;
@@ -31,7 +31,7 @@ DEFINE INDEX lectio_id ON TABLE student FIELDS lectio_id UNIQUE;
 DEFINE FIELD school ON TABLE student TYPE string VALUE "57";
 DEFINE FIELD class ON TABLE student TYPE record (class);
 DEFINE FIELD elo ON TABLE student TYPE number VALUE $value OR 1500;
-
+DEFINE FIELD participates ON TABLE student TYPE bool VALUE $after OR false PERMISSIONS FOR update WHERE $after == true FOR DELETE NONE;
 DEFINE INDEX username ON TABLE student FIELDS username UNIQUE;
 DEFINE INDEX picture_id ON TABLE student FIELDS picture_id UNIQUE;
 
@@ -70,11 +70,11 @@ DEFINE INDEX author ON TABLE elo_rating COLUMNS author, winner, loser UNIQUE;
 DEFINE EVENT change_elo ON TABLE elo_rating WHEN $event == "CREATE" THEN
   (UPDATE $after.winner.id SET elo = function($after.winner_elo_before, $after.loser_elo_before) {
 	const score = arguments[0] + 15*(1 - (1/(1 + 10**((arguments[1] - arguments[0]) / 400))))
-  	return Math.round(score*Math.pow(10, 3)) / 10;
+  	return score;
   })
   &&   ( UPDATE $after.loser.id SET elo = function($after.loser_elo_before, $after.winner_elo_before) {
 	const score = arguments[0] + 15*(0 - (1/(1 + 10**((arguments[1] - arguments[0]) / 400))))
-  	return Math.round(score*Math.pow(10, 3)) / 10;
+  	return score;
   });
 DEFINE FIELD gender ON student TYPE string VALUE $before OR function((http::post("https://v2.namsor.com/NamSorAPIv2/api2/json/genderFullGeoBatch", {
 	"personalNames": [{name: $this.name, countryIso2: "DK"}]

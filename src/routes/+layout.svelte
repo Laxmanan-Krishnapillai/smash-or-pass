@@ -21,6 +21,7 @@
 		console.log(token);
 		if (!cirql.isConnected) {
 			await cirql.ready();
+			console.log('ready');
 			if (!cirql.options.credentials) {
 				await cirql.signIn({ token });
 				dbready.set(true);

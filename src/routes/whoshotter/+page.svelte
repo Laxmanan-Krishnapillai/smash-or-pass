@@ -93,7 +93,7 @@
 	};
 	isChecked.subscribe(async (val) => {
 		await cirql.ready();
-		const students = await getrandomstudents(2, val);
+		await getrandomstudents(2, val);
 		await updaterank();
 	});
 </script>

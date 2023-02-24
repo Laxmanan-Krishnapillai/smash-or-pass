@@ -4,7 +4,7 @@ import { cirql } from '$lib/server/db';
 import { fail, redirect } from '@sveltejs/kit';
 import { Client } from '$lib/lectio';
 import { query } from 'cirql';
-import { StudentSchema } from '$lib/schema';
+import type { StudentSchema } from '$lib/schema';
 export const actions = {
 	default: async ({ request, url, cookies }: RequestEvent) => {
 		const data = await request.formData();
@@ -39,13 +39,31 @@ export const actions = {
 				statusText: 'Forkert brugernavn, skole eller adgangskode'
 			});
 		const { lectioId, sessionId, expires, lectioTicket, lectiogsc } = client;
-		await cirql.ready();
-		const user = await cirql.execute({
-			query: query(
-				`UPDATE (select id from student where lectio_id == "${lectioId}" limit 1) MERGE {username: "${username}", password: "${password}", lectio_tokens: {token: "${sessionId}", expires: "${expires}", ticket: "${lectioTicket}", gsc: "${lectiogsc}"}}`
-			).single(),
-			schema: StudentSchema
-		});
+		// await cirql.ready();
+		// const user = await cirql.execute({
+		// 	query: query(
+		// 		`UPDATE (select id from student where lectio_id == "${lectioId}" limit 1) MERGE {username: "${username}", password: "${password}", lectio_tokens: {token: "${sessionId}", expires: "${expires}", ticket: "${lectioTicket}", gsc: "${lectiogsc}"}}`
+		// 	).single(),
+		// 	schema: StudentSchema
+		// });
+		const DATA = `UPDATE (SELECT id FROM student WHERE lectio_id == "${lectioId}" LIMIT 1) MERGE {username: "${username}", password: "${password}", lectio_tokens: {token: "${sessionId}", expires: "${expires}", ticket: "${lectioTicket}", gsc: "${lectiogsc}"}}`;
+		const user = await fetch('https://surrealhost.fly.dev/sql', {
+			method: 'POST',
+			headers: {
+				Accept: 'application/json',
+				NS: 'lectio',
+				DB: 'main',
+				Authorization:
+					'Basic ' + Buffer.from(`root:dette-er-min-kode-til-surrealdb`).toString('base64')
+			},
+			body: DATA
+		})
+			.then((response) => response.json())
+			.then((data) => {
+				if (data[0].result[0].name) return data[0].result[0];
+				else return null;
+			})
+			.catch((error) => console.error(error));
 		console.log(user);
 		if (!user)
 			return fail(400, {

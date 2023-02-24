@@ -4,13 +4,22 @@
 	import { goto } from '$app/navigation';
 	import { cirql } from '$lib/db';
 	import { dbready } from '$lib/db';
+	import { toastStore, type ToastSettings } from '@skeletonlabs/skeleton';
 	let username = '';
 	let password = '';
+	const settings = {
+		message: 'Logging in...',
+		preset: 'primary'
+	} satisfies ToastSettings;
 </script>
 
 <section class="unstyled flex justify-center items-center h-screen">
 	<form
 		bind:this={form}
+		on:submit={() => {
+			toastStore.trigger(settings);
+			toastStore.clear();
+		}}
 		use:enhance={({ form, data, action, cancel }) => {
 			return async ({ result, update }) => {
 				console.log(result);

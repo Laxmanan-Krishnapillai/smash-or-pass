@@ -1,4 +1,4 @@
-import { Cirql } from 'cirql';
+import { Cirql, CirqlStateless } from 'cirql';
 import { SURREALDB_USER, SURREALDB_PASS } from '$env/static/private';
 const cirql = new Cirql({
 	connection: {
