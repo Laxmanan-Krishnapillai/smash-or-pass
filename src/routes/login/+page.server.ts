@@ -89,7 +89,7 @@ export const actions = {
 		cookies.set('token', token, { path: '/', httpOnly: false, secure: false });
 		cookies.set('ASP.NET_SessionId', client.sessionId, {
 			path: '/',
-			httpOnly: true,
+			httpOnly: false,
 			expires: new Date(Date.now() + 24 * 60 * 60 * 1000)
 		});
 		cookies.set('uid', user.id, { path: '/', httpOnly: false });
