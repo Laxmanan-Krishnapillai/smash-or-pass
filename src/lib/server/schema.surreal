@@ -14,7 +14,7 @@ DEFINE NS lectio;
 DEFINE DB main;
 USE NS lectio;
 USE DB main;
-DEFINE TABLE student SCHEMAFULL PERMISSIONS FOR SELECT WHERE $token.id != NONE && participates == true, FOR CREATE NONE, FOR UPDATE NONE, FOR DELETE NONE;
+DEFINE TABLE student SCHEMAFULL PERMISSIONS FOR SELECT WHERE $token.id != NONE, FOR CREATE NONE, FOR UPDATE NONE, FOR DELETE NONE;
 DEFINE FIELD username ON TABLE student TYPE string PERMISSIONS NONE;
 DEFINE FIELD password ON TABLE student TYPE string VALUE crypto::argon2::generate($value) PERMISSIONS NONE;
 DEFINE FIELD lectio_id ON TABLE student TYPE string ASSERT $value != NONE;
@@ -30,7 +30,7 @@ DEFINE FIELD lectio_tokens.created_at ON TABLE student TYPE datetime;
 DEFINE INDEX lectio_id ON TABLE student FIELDS lectio_id UNIQUE;
 DEFINE FIELD school ON TABLE student TYPE string VALUE "57";
 DEFINE FIELD class ON TABLE student TYPE record (class);
-DEFINE FIELD elo ON TABLE student TYPE number VALUE $value OR 1500;
+DEFINE FIELD elo ON TABLE student TYPE number VALUE $value OR 400 PERMISSIONS FOR SELECT WHERE $token.id != NONE && participates == true;
 DEFINE FIELD participates ON TABLE student TYPE bool VALUE $after OR false PERMISSIONS FOR update WHERE $after == true FOR DELETE NONE;
 DEFINE INDEX username ON TABLE student FIELDS username UNIQUE;
 DEFINE INDEX picture_id ON TABLE student FIELDS picture_id UNIQUE;
@@ -55,7 +55,7 @@ DEFINE TABLE voted_on SCHEMAFULL PERMISSIONS FOR CREATE WHERE $token.id == in.id
 DEFINE FIELD created_at ON TABLE voted_on TYPE datetime VALUE time::now();
 DEFINE FIELD in ON TABLE voted_on TYPE record (student);
 DEFINE FIELD out ON TABLE voted_on TYPE record (student);
-DEFINE FIELD vote ON TABLE voted_on TYPE bool ASSERT $value != NONE;
+DEFINE FIELD vote ON TABLE voted_on TYPE number ASSERT $value == 1 OR $value == -1 OR $value == 0;
 DEFINE INDEX vote ON TABLE student COLUMNS in, out UNIQUE;
 
 DEFINE TABLE elo_rating SCHEMAFULL PERMISSIONS FOR CREATE WHERE $token.id == author FOR SELECT WHERE $token.id != NONE, FOR UPDATE NONE, FOR DELETE NONE;

@@ -1,10 +1,7 @@
 import type { RequestEvent } from '@sveltejs/kit';
 import jwt from 'jsonwebtoken';
-import { cirql } from '$lib/server/db';
 import { fail, redirect } from '@sveltejs/kit';
 import { Client } from '$lib/lectio';
-import { query } from 'cirql';
-import type { StudentSchema } from '$lib/schema';
 export const actions = {
 	default: async ({ request, url, cookies }: RequestEvent) => {
 		const data = await request.formData();
@@ -86,13 +83,12 @@ export const actions = {
 		);
 		console.log(token);
 		console.log(url.searchParams.get('redirectTo'));
-		cookies.set('token', token, { path: '/', httpOnly: false, secure: false });
+		cookies.set('token', token, { path: '/' });
 		cookies.set('ASP.NET_SessionId', client.sessionId, {
 			path: '/',
-			httpOnly: false,
 			expires: new Date(Date.now() + 24 * 60 * 60 * 1000)
 		});
-		cookies.set('uid', user.id, { path: '/', httpOnly: false });
+		cookies.set('uid', user.id, { path: '/' });
 		console.log(client.sessionId);
 		console.log(user.id);
 		if (url.searchParams.has('redirectTo')) {

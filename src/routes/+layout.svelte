@@ -43,17 +43,17 @@
 >
 	<span class="flex gap-4">
 		<a
-			href="/smash-pass"
+			href="/rate/smash-pass"
 			class="btn variant-filled-primary hover:variant-filled-secondary btn-sm sm:btn-base"
 			>Smash or Pass</a
 		>
 		<a
-			href="/whoshotter"
+			href="/rate/whoshotter"
 			class="btn variant-filled-primary hover:variant-filled-secondary btn-sm sm:btn-base"
 			>Who's hotter?</a
 		>
 		<a
-			href="/nameguesser"
+			href="/rate/nameguesser"
 			class="btn variant-filled-primary hover:variant-filled-secondary btn-sm sm:btn-base"
 			>Name Guesser</a
 		>

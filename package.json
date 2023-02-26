@@ -15,7 +15,7 @@
 	},
 	"devDependencies": {
 		"@playwright/test": "^1.28.1",
-		"@skeletonlabs/skeleton": "^0.99.5",
+		"@skeletonlabs/skeleton": "^0.132.5",
 		"@sveltejs/adapter-auto": "^2.0.0",
 		"@sveltejs/kit": "^1.5.0",
 		"@types/jsdom": "^21.1.0",
@@ -41,6 +41,7 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"@floating-ui/dom": "^1.2.1",
 		"@rocambille/elo": "^2.1.5",
 		"aws-sdk": "^2.1318.0",
 		"cirql": "^0.5.5",

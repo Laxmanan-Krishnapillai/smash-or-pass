@@ -15,7 +15,7 @@
 	let settings = {
 		offset: 0,
 		limit: 2,
-		size: 1000,
+		size: 600,
 		amounts: [1, 2, 5, 10]
 	};
 	const updaterank = async () => {

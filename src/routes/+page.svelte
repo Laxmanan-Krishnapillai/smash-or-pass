@@ -95,6 +95,7 @@
 	<span class="flex">
 		<InputChip
 			allowUpperCase
+			name="klasse"
 			class=""
 			label="Klasser"
 			placeholder="Vælg klasser..."
