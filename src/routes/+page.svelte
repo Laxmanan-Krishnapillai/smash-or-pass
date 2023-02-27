@@ -7,9 +7,9 @@
 	import { query, select } from 'cirql';
 	import { dbready } from '$lib/db';
 	let isChecked = writable(true);
-	let gender: 'female' | 'male' = $isChecked ? 'female' : 'male';
 	let classes: string[] = [];
 	let activeClass: string[] = [];
+	$: gender = $isChecked ? 'female' : 'male';
 	dbready.subscribe(async (ready) => {
 		if (!ready) return;
 		classes = (
@@ -20,7 +20,7 @@
 		).map((c) => c.name);
 		console.log(classes);
 	});
-	let val = '';
+	let val: string = '';
 	const students = writable<Student[]>([]);
 	// throttle get image function
 	// const getImage = throttle(async (id) => {
@@ -36,8 +36,8 @@
 					await cirql.execute({
 						query: query(
 							`SELECT * FROM student WHERE ${
-								val.length > 0 ? `string::startsWith(name, $val) AND` : ''
-							} gender == $gender ${
+								val.length > 0 ? `string::startsWith(name, $val) AND ` : ''
+							}gender == $gender ${
 								activeClass.length > 0 ? `AND class.name inside $activeClass` : ''
 							}`
 						),
@@ -59,7 +59,7 @@
 		console.log(im);
 	});
 	isChecked.subscribe(async (gval) => {
-		gender = gval ? 'female' : 'male';
+		console.log(val, activeClass, gender);
 		if (val.length > 0 || activeClass.length > 0) {
 			const newStudents = (
 				await cirql.execute({
@@ -90,6 +90,9 @@
 	<Switch bind:isChecked />
 	<input
 		class="unstyled text-black border-2 border-black rounded-lg px-10 py-4 w-96"
+		on:change={(e) => {
+			console.log(e);
+		}}
 		bind:value={val}
 	/>
 	<span class="flex">
