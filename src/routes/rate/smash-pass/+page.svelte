@@ -24,7 +24,7 @@
 		return [];
 	})();
 	const votedOnBefore = writable<string[]>(initialValue);
-	const vote = async (vote: boolean) => {
+	const vote = async (vote: 1 | -1 | 0) => {
 		if ($student === null) return;
 		console.log($student.id, vote, uid);
 		const res = await cirql.execute({
@@ -32,8 +32,7 @@
 			schema: VotedOnSchema,
 			params: {
 				uid,
-				id: $student.id,
-				vote: vote ? 'true' : 'false'
+				id: $student.id
 			}
 		});
 		console.log(res);

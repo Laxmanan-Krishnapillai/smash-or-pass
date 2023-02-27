@@ -73,5 +73,5 @@ export const VotedOnSchema = z.object({
 	created_at: z.string(),
 	in: z.string(),
 	out: z.string(),
-	vote: z.boolean()
+	vote: z.number().min(-1).max(1).int()
 });
