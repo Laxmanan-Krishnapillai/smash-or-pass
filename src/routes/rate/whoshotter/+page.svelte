@@ -5,7 +5,6 @@
 	import Switch from '$lib/components/switch.svelte';
 	import { type Student, StudentSchema, EloRatingSchema } from '$lib/schema';
 	import { Paginator } from '@skeletonlabs/skeleton';
-	import Image from '$lib/components/image.svelte';
 	import { writable } from 'svelte/store';
 	import { dbready } from '$lib/db';
 	let student1 = writable<Student | null>(null);
@@ -126,6 +125,12 @@
 			{/if}
 		</button>
 	</div>
+	<button
+		on:click={() => getrandomstudents(2, $isChecked)}
+		class="btn variant-ghost-tertiary rounded-lg"
+	>
+		SKIP
+	</button>
 </section>
 <section class="flex flex-col h-screen px-20 gap-4">
 	<h1>Rank</h1>
