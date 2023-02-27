@@ -92,7 +92,7 @@
 		{/if}
 	</div>
 	<span class="flex justify-between w-full"
-		><button on:click={() => vote(true)} class="btn variant-filled-secondary !bg-white rounded-lg"
+		><button on:click={() => vote(1)} class="btn variant-filled-secondary !bg-white rounded-lg"
 			><span
 				><svg
 					xmlns="http://www.w3.org/2000/svg"
@@ -112,7 +112,7 @@
 			</span>
 			<!-- <span class="">SMASH</span> -->
 		</button>
-		<button on:click={() => vote(false)} class="btn variant-filled-secondary rounded-lg !bg-white">
+		<button on:click={() => vote(-1)} class="btn variant-filled-secondary rounded-lg !bg-white">
 			<span
 				><svg
 					xmlns="http://www.w3.org/2000/svg"
@@ -133,5 +133,6 @@
 			>
 			<!-- <span class="">PASS</span> -->
 		</button>
+		<button on:click={() => vote(0)} class="btn rounded-lg variant-ghost-secondary">SKIP</button>
 	</span>
 </section>

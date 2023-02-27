@@ -44,18 +44,15 @@
 	<span class="flex gap-4">
 		<a
 			href="/rate/smash-pass"
-			class="btn variant-filled-primary hover:variant-filled-secondary btn-sm sm:btn-base"
-			>Smash or Pass</a
+			class="btn variant-filled-primary hover:variant-filled-secondary sm:btn-sm ">Smash or Pass</a
 		>
 		<a
 			href="/rate/whoshotter"
-			class="btn variant-filled-primary hover:variant-filled-secondary btn-sm sm:btn-base"
-			>Who's hotter?</a
+			class="btn variant-filled-primary hover:variant-filled-secondary sm:btn-sm">Who's hotter?</a
 		>
 		<a
 			href="/rate/nameguesser"
-			class="btn variant-filled-primary hover:variant-filled-secondary btn-sm sm:btn-base"
-			>Name Guesser</a
+			class="btn variant-filled-primary hover:variant-filled-secondary sm:btn-sm">Name Guesser</a
 		>
 	</span>
 	<a
