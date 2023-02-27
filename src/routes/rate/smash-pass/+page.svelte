@@ -112,6 +112,7 @@
 			</span>
 			<!-- <span class="">SMASH</span> -->
 		</button>
+		<button on:click={() => vote(0)} class="btn rounded-lg variant-ghost-tertiary">SKIP</button>
 		<button on:click={() => vote(-1)} class="btn variant-filled-secondary rounded-lg !bg-white">
 			<span
 				><svg
@@ -133,6 +134,5 @@
 			>
 			<!-- <span class="">PASS</span> -->
 		</button>
-		<button on:click={() => vote(0)} class="btn rounded-lg variant-ghost-secondary">SKIP</button>
 	</span>
 </section>
