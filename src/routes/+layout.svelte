@@ -40,7 +40,7 @@
 </script>
 
 <header
-	class="fixed left-0 right-0 mx-auto rounded-lg my-4 z-50 top-4 flex w-4/5 justify-between p-4 md:p-0 shadow-2xl items-center bg-white"
+	class="fixed left-0 right-0 mx-auto rounded-lg my-4 z-50 top-4 flex w-4/5 justify-between p-4 shadow-2xl items-center bg-white"
 >
 	<button
 		on:click={(e) => {
@@ -106,7 +106,7 @@
 		></button
 	>
 	<span
-		class="bg-white top-full mt-4 md:mt-0 left-0 rounded-lg p-4 absolute md:static flex flex-col md:flex-row gap-4"
+		class="bg-white top-full mt-4 md:mt-0 left-0 rounded-lg p-4 md:p-0 absolute md:static flex flex-col md:flex-row gap-4"
 	>
 		<a href="/rate/smash-pass" class="btn variant-filled-primary hover:variant-filled-secondary"
 			>Smash or Pass</a
