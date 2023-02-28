@@ -40,7 +40,7 @@
 </script>
 
 <header
-	class="fixed left-0 right-0 mx-auto rounded-lg my-4 z-50 top-4 flex w-4/5 justify-between p-4 shadow-2xl items-center bg-white"
+	class="fixed left-0 right-0 mx-auto rounded-lg my-4 z-50 top-4 flex w-4/5 justify-between p-4 md:p-0 shadow-2xl items-center bg-white"
 >
 	<button
 		on:click={(e) => {
