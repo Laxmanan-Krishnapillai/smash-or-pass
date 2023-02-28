@@ -11,7 +11,7 @@
 	import { page } from '$app/stores';
 	let visible = false;
 	page.subscribe(async (page) => {
-		if (page.url.pathname !== '/login') {
+		if (page !== null && page.url.pathname !== '/login') {
 			const token = document.cookie.split('token=')[1].split(';')[0];
 			if (!token) goto('/login');
 			console.log(token);
