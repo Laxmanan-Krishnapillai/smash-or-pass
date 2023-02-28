@@ -6,33 +6,30 @@
 	import { Toast } from '@skeletonlabs/skeleton';
 	import { goto } from '$app/navigation';
 	import { fly } from 'svelte/transition';
-	import { onMount } from 'svelte';
 	import { cirql } from '$lib/db';
 	import { dbready } from '$lib/db';
 	import { page } from '$app/stores';
 	let visible = false;
-	onMount(async () => {
-		if (!localStorage.getItem('cookie')) {
-			visible = true;
-		}
-		if ($page.url.pathname === '/login') return;
-		const token = document.cookie.split('token=')[1].split(';')[0];
-		if (!token) goto('/login');
-		console.log(token);
-		if (!cirql.isConnected) {
-			await cirql.ready();
-			console.log('ready');
-			if (!cirql.options.credentials) {
+	page.subscribe(async (page) => {
+		if (page.url.pathname !== '/login') {
+			const token = document.cookie.split('token=')[1].split(';')[0];
+			if (!token) goto('/login');
+			console.log(token);
+			if (!cirql.isConnected) {
+				await cirql.ready();
+				console.log('ready');
+				if (!cirql.options.credentials) {
+					await cirql.signIn({ token });
+					dbready.set(true);
+				}
+				dbready.set(true);
+			}
+			if (cirql.options.credentials) {
+				dbready.set(true);
+			} else {
 				await cirql.signIn({ token });
 				dbready.set(true);
 			}
-			dbready.set(true);
-		}
-		if (cirql.options.credentials) {
-			dbready.set(true);
-		} else {
-			await cirql.signIn({ token });
-			dbready.set(true);
 		}
 	});
 	let menuopen = false;
