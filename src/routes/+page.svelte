@@ -85,6 +85,9 @@
 	});
 </script>
 
+<svelte:head>
+	<title>Find en elev</title>
+</svelte:head>
 <section class="flex flex-col items-center justify-center gap-4 h-[80vh]">
 	<h1 class="text-6xl font-thin text-center mb-6">Find en elev</h1>
 	<Switch bind:isChecked />

@@ -76,7 +76,7 @@ DEFINE EVENT change_elo ON TABLE elo_rating WHEN $event == "CREATE" THEN
 	const score = arguments[0] + 15*(0 - (1/(1 + 10**((arguments[1] - arguments[0]) / 400))))
   	return score;
   });
-DEFINE FIELD gender ON student TYPE string VALUE $before OR function((http::post("https://v2.namsor.com/NamSorAPIv2/api2/json/genderFullGeoBatch", {
+DEFINE FIELD gender ON student TYPE string ASSERT $value == "female" OR $value == "male" OR function((http::post("https://v2.namsor.com/NamSorAPIv2/api2/json/genderFullGeoBatch", {
 	"personalNames": [{name: $this.name, countryIso2: "DK"}]
 }, {
 		"X-API-KEY": "8765cc904bf2fb0056a3ebab0623a902",
