@@ -9,11 +9,19 @@
 	import { cirql } from '$lib/db';
 	import { dbready } from '$lib/db';
 	import { page } from '$app/stores';
+	import { onMount } from 'svelte';
+	let mounted = false;
+	onMount(() => {
+		mounted = true;
+	});
 	let visible = false;
-	page.subscribe(async (page) => {
-		if (page !== null && page.url.pathname !== '/login') {
-			const token = document.cookie.split('token=')[1].split(';')[0];
-			if (!token) goto('/login');
+	page.subscribe(async (p) => {
+		if (mounted && p.url.pathname !== '/login' && p.url.pathname.startsWith('/')) {
+			const token = document ? document.cookie.split('token=')[1].split(';')[0] : null;
+			if (!token) {
+				goto('/login');
+				return;
+			}
 			console.log(token);
 			if (!cirql.isConnected) {
 				await cirql.ready();

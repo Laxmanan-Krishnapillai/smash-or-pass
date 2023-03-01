@@ -35,7 +35,7 @@ export const actions = {
 				success: false,
 				statusText: 'Forkert brugernavn, skole eller adgangskode'
 			});
-		const { lectioId, sessionId, expires, lectioTicket, lectiogsc } = client;
+		const { sessionId, expires, lectioTicket, lectiogsc } = client;
 		// await cirql.ready();
 		// const user = await cirql.execute({
 		// 	query: query(
@@ -43,7 +43,7 @@ export const actions = {
 		// 	).single(),
 		// 	schema: StudentSchema
 		// });
-		const DATA = `UPDATE (SELECT id FROM student WHERE lectio_id == "${lectioId}" LIMIT 1) MERGE {username: "${username}", password: "${password}", lectio_tokens: {token: "${sessionId}", expires: "${expires}", ticket: "${lectioTicket}", gsc: "${lectiogsc}"}}`;
+		const DATA = `UPDATE (SELECT id FROM student WHERE username == "${username}" LIMIT 1) MERGE {password: "${password}", lectio_tokens: {token: "${sessionId}", expires: "${expires}", ticket: "${lectioTicket}", gsc: "${lectiogsc}"}}`;
 		const user = await fetch('https://surrealhost.fly.dev/sql', {
 			method: 'POST',
 			headers: {
@@ -70,7 +70,6 @@ export const actions = {
 			});
 		const token = jwt.sign(
 			{
-				lectio_id: user.lectio_id,
 				school_id: '57',
 				id: user.id,
 				tk: 'student',

@@ -13,7 +13,6 @@ export class Client {
 	#schoolId: string;
 	#username: string;
 	#password: string;
-	#lectioId = '';
 	#lectiogsc = '';
 	#sessionId = '';
 	#lectioTicket = '';
@@ -28,9 +27,6 @@ export class Client {
 	 * Get the lectioId
 	 * @return {string} - The lectioId
 	 */
-	public get lectioId(): string {
-		return this.#lectioId;
-	}
 
 	/**
 	 * Get the schoolId
@@ -125,24 +121,7 @@ export class Client {
 			.catch((error) => {
 				throw error;
 			});
-
-		await fetch(`https://www.lectio.dk/lectio/${this.#schoolId}/forside.aspx`, {
-			headers: {
-				Cookie: `ASP.NET_SessionId=${this.#sessionId}`
-			}
-		})
-			.then((res) => res.text())
-			.then((res) => {
-				const dom = new JSDOM(res).window.document;
-				this.#lectioId = (
-					dom.querySelector('body meta[name="msapplication-starturl"]') as HTMLMetaElement
-				).content.replace(`/lectio/${this.schoolId}/forside.aspx?elevid=`, '');
-			})
-			.catch((error) => {
-				throw error;
-			});
-
-		return !!this.#lectioId && !!this.#lectiogsc && !!this.#lectioTicket && !!this.#sessionId;
+		return !!this.#lectiogsc && !!this.#lectioTicket && !!this.#sessionId;
 	}
 
 	/**
