@@ -3,20 +3,20 @@
 	import '../theme.postcss';
 	import '@skeletonlabs/skeleton/styles/all.css';
 	import '../app.postcss';
-	import { Toast } from '@skeletonlabs/skeleton';
+	import { Toast, Avatar } from '@skeletonlabs/skeleton';
 	import { goto } from '$app/navigation';
 	import { fly } from 'svelte/transition';
 	import { cirql } from '$lib/db';
-	import { dbready } from '$lib/db';
+	import { dbready, authStudent } from '$lib/db';
 	import { page } from '$app/stores';
-	import { onMount } from 'svelte';
+	import { onDestroy, onMount } from 'svelte';
 	let mounted = false;
-	onMount(() => {
-		mounted = true;
+	authStudent.subscribe((s) => {
+		console.log(s);
 	});
-	let visible = false;
-	page.subscribe(async (p) => {
-		if (mounted && p.url.pathname !== '/login' && p.url.pathname.startsWith('/')) {
+	console.log($authStudent);
+	const dbconnect = async (p: typeof $page) => {
+		if (p.url.pathname !== '/login' && p.url.pathname.startsWith('/')) {
 			const token = document ? document.cookie.split('token=')[1].split(';')[0] : null;
 			if (!token) {
 				goto('/login');
@@ -24,6 +24,7 @@
 			}
 			console.log(token);
 			if (!cirql.isConnected) {
+				dbready.set(false);
 				await cirql.ready();
 				console.log('ready');
 				if (!cirql.options.credentials) {
@@ -35,10 +36,27 @@
 			if (cirql.options.credentials) {
 				dbready.set(true);
 			} else {
-				await cirql.signIn({ token });
-				dbready.set(true);
+				dbready.set(false);
+				cirql.signIn({ token }).then(() => {
+					dbready.set(true);
+				});
 			}
 		}
+	};
+	onMount(async () => {
+		await dbconnect($page);
+		mounted = true;
+	});
+	let visible = false;
+	page.subscribe(async (p) => {
+		if (mounted) {
+			await dbconnect(p);
+			console.log('mounted');
+		}
+	});
+	onDestroy(() => {
+		dbready.set(false);
+		cirql.disconnect();
 	});
 	let menuopen = false;
 	export { cirql };
@@ -119,11 +137,21 @@
 		<a href="/rate/whoshotter" class="btn variant-filled-primary hover:variant-filled-secondary"
 			>Who's hotter?</a
 		>
-		<a href="/rate/nameguesser" class="btn variant-filled-primary hover:variant-filled-secondary"
+		<a href="/nameguesser" class="btn variant-filled-primary hover:variant-filled-secondary"
 			>Name Guesser</a
 		>
 	</span>
-	<a href="/login" class="btn variant-filled-primary hover:variant-filled-secondary">Login</a>
+	{#if $authStudent}
+		<Avatar
+			...
+			border="border-4 border-surface-300-600-token hover:!border-primary-500"
+			cursor="cursor-pointer"
+			src="/images/{$authStudent.picture_id}.jpg"
+			on:click={() => {}}
+		/>
+	{:else}
+		<a href="/login" class="btn variant-filled-primary hover:variant-filled-secondary">Login</a>
+	{/if}
 </header>
 
 <slot />

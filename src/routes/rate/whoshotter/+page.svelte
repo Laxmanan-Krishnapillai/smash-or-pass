@@ -1,28 +1,30 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { cirql } from '$lib/db';
-	import { query, create } from 'cirql';
+	import { query, create, countRecord, count, eq } from 'cirql';
 	import Switch from '$lib/components/switch.svelte';
 	import { type Student, StudentSchema, EloRatingSchema } from '$lib/schema';
 	import { Paginator } from '@skeletonlabs/skeleton';
 	import { writable } from 'svelte/store';
 	import { dbready } from '$lib/db';
+	import type { TypeOf } from 'zod';
 	let student1 = writable<Student | null>(null);
 	let student2 = writable<Student | null>(null);
 	let isChecked = writable(true);
 	let rank: null | Student[] = null;
-	let settings = {
+	Paginator;
+	let settings = writable({
 		offset: 0,
 		limit: 2,
-		size: 600,
+		size: 0,
 		amounts: [1, 2, 5, 10]
-	};
+	});
 	const updaterank = async () => {
 		const res = await cirql.execute({
 			query: query(
 				`SELECT * FROM student WHERE gender == $gender ORDER BY elo DESC LIMIT ${
-					settings.limit
-				} START ${settings.offset * settings.limit}`
+					$settings.limit
+				} START ${$settings.offset * $settings.limit}`
 			),
 			schema: StudentSchema,
 			params: {
@@ -72,13 +74,24 @@
 	});
 	dbready.subscribe(async (val) => {
 		if (val) {
+			const size = await cirql.execute({
+				query: count('student').where({
+					gender: eq($isChecked ? 'female' : 'male')
+				})
+			});
+			settings.update((s) => {
+				return {
+					...s,
+					size
+				};
+			});
 			await getrandomstudents(2, $isChecked);
 			console.log($isChecked);
 			await updaterank();
 		}
 	});
 	const vote = async (winner: string, loser: string) => {
-		const res = await cirql.execute({
+		cirql.execute({
 			query: create('elo_rating').content({
 				winner,
 				loser,
@@ -86,14 +99,25 @@
 			}),
 			schema: EloRatingSchema
 		});
-		console.log(res);
+
 		const students = await getrandomstudents(2, $isChecked);
 		console.log(students);
 	};
 	isChecked.subscribe(async (val) => {
 		await cirql.ready();
-		await getrandomstudents(2, val);
-		await updaterank();
+		const size = await cirql.execute({
+			query: count('student').where({
+				gender: eq($isChecked ? 'female' : 'male')
+			})
+		});
+		settings.update((s) => {
+			return {
+				...s,
+				size
+			};
+		});
+		getrandomstudents(2, val);
+		updaterank();
 	});
 </script>
 
@@ -141,7 +165,7 @@
 		on:amount={async () => {
 			await updaterank();
 		}}
-		bind:settings
+		settings={$settings}
 	/>
 	{#if rank}
 		{#each rank as student}

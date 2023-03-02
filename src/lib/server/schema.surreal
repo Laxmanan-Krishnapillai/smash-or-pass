@@ -82,5 +82,11 @@ DEFINE FIELD gender ON student TYPE string ASSERT $value == "female" OR $value =
 		"X-API-KEY": "8765cc904bf2fb0056a3ebab0623a902",
 }))){	
 	return arguments[0].personalNames[0].likelyGender;
-}
-;
+};
+
+DEFINE TABLE teacher SCHEMAFULL PERMISSIONS FOR SELECT WHERE $token.id != NONE, FOR CREATE NONE, FOR UPDATE NONE, FOR DELETE NONE;
+DEFINE FIELD lectio_id ON TABLE teacher TYPE string ASSERT $value != NONE;
+DEFINE FIELD name ON TABLE teacher TYPE string ASSERT $value != NONE;
+DEFINE FIELD created_at ON TABLE teacher TYPE datetime VALUE time::now();
+DEFINE FIELD school ON TABLE teacher TYPE record (school) ASSERT $value != NONE;
+DEFINE FIELD initials ON TABLE teacher TYPE string ASSERT $value != NONE;

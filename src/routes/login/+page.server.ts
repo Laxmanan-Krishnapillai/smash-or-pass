@@ -93,6 +93,6 @@ export const actions = {
 		if (url.searchParams.has('redirectTo')) {
 			throw redirect(303, url.searchParams.get('redirectTo'));
 		}
-		return { ok: true, success: true, status: 200 };
+		return { student: user };
 	}
 };

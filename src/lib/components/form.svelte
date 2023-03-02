@@ -2,14 +2,14 @@
 	import { enhance } from '$app/forms';
 	let form: HTMLFormElement;
 	import { goto } from '$app/navigation';
+	import { authStudent } from '$lib/db';
 	import { cirql } from '$lib/db';
 	import { dbready } from '$lib/db';
 	import { toastStore, type ToastSettings } from '@skeletonlabs/skeleton';
 	let username = '';
 	let password = '';
 	const settings = {
-		message: 'Logging in...',
-		preset: 'primary'
+		message: 'Logging in...'
 	} satisfies ToastSettings;
 </script>
 
@@ -23,6 +23,8 @@
 		use:enhance={({ form, data, action, cancel }) => {
 			return async ({ result, update }) => {
 				console.log(result);
+				console.log(result.data);
+				if (result.type === 'success') authStudent.set(result.data.student);
 				const token = document.cookie.split('token=')[1].split(';')[0];
 				if (!cirql.isConnected) {
 					await cirql.ready();
