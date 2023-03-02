@@ -69,8 +69,9 @@
 		if (!t) return;
 		if (!t.closest('.profilebox') && profileopen) profileopen = false;
 		if (t.closest('#profilebtn')) profileopen = !profileopen;
-		if (!t.closest('#menu') && menuopen) menuopen = false;
-		if (t.closest('#menubtn')) menuopen = !menuopen;
+		let mbtn = t.closest('#menubtn');
+		if (!mbtn && menuopen) menuopen = false;
+		if (mbtn) menuopen = !menuopen;
 	}}
 />
 <header
