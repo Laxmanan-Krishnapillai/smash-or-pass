@@ -59,96 +59,115 @@
 		cirql.disconnect();
 	});
 	let menuopen = false;
+	let profileopen = false;
 	export { cirql };
 </script>
 
+<svelte:window
+	on:click={(e) => {
+		let t = e.target;
+		if (!t) return;
+		if (!t.closest('.profilebox') && profileopen) profileopen = false;
+		if (t.closest('#profilebtn')) profileopen = !profileopen;
+		if (!t.closest('#menu') && menuopen) menuopen = false;
+		if (t.closest('#menubtn')) menuopen = !menuopen;
+	}}
+/>
 <header
 	class="fixed left-0 right-0 mx-auto rounded-lg my-4 z-50 top-4 flex w-4/5 justify-between p-4 shadow-2xl items-center bg-white"
 >
-	<button
-		on:click={(e) => {
-			menuopen = !menuopen;
-			let el = e.target.closest('button').nextElementSibling;
-			!menuopen ? (el.style.display = 'flex') : null;
-			menuopen
-				? (el.animate(
-						[
-							{
-								opacity: 1,
-								transform: 'translateY(0)'
-							},
-							{
-								opacity: 0,
-								transform: 'translateY(100%)'
-							}
-						],
-						{
-							duration: 200,
-							easing: 'ease-in-out',
-							fill: 'forwards'
-						}
-				  ).onfinish = () => {
-						el.style.display = 'none';
-				  })
-				: el.animate(
-						[
-							{
-								opacity: 0,
-								transform: 'translateY(100%)'
-							},
-							{
-								opacity: 1,
-								transform: 'translateY(0)'
-							}
-						],
-						{
-							duration: 200,
-							easing: 'ease-in-out',
-							fill: 'forwards'
-						}
-				  );
-		}}
-		class="btn variant-filled-primary btn-icon md:hidden"
-		><span
-			><svg
-				xmlns="http://www.w3.org/2000/svg"
-				class="icon icon-tabler icon-tabler-menu"
-				width="24"
-				height="24"
-				viewBox="0 0 24 24"
-				stroke-width="2"
-				stroke="currentColor"
-				fill="none"
-				stroke-linecap="round"
-				stroke-linejoin="round"
+	<div id="menu">
+		<button id="menubtn" class="btn variant-filled-primary btn-icon md:hidden"
+			><span
+				><svg
+					xmlns="http://www.w3.org/2000/svg"
+					class="icon icon-tabler icon-tabler-menu"
+					width="24"
+					height="24"
+					viewBox="0 0 24 24"
+					stroke-width="2"
+					stroke="currentColor"
+					fill="none"
+					stroke-linecap="round"
+					stroke-linejoin="round"
+				>
+					<path stroke="none" d="M0 0h24v24H0z" fill="none" />
+					<path d="M4 8l16 0" />
+					<path d="M4 16l16 0" />
+				</svg></span
+			></button
+		>
+		<span
+			class="bg-white origin-top-left {menuopen
+				? ''
+				: 'scale-0 opacity-0'} duration-300 md:scale-100 md:opacity-100 transition-[transform,_opacity] top-full mt-4 md:mt-0 left-0 rounded-lg p-4 md:p-0 absolute md:static flex flex-col md:flex-row gap-4"
+			tabindex="-1"
+		>
+			<a href="/rate/smash-pass" class="btn variant-filled-primary hover:variant-filled-secondary"
+				>Smash or Pass</a
 			>
-				<path stroke="none" d="M0 0h24v24H0z" fill="none" />
-				<path d="M4 8l16 0" />
-				<path d="M4 16l16 0" />
-			</svg></span
-		></button
-	>
-	<span
-		class="bg-white top-full mt-4 md:mt-0 left-0 rounded-lg p-4 md:p-0 absolute md:static flex flex-col md:flex-row gap-4"
-	>
-		<a href="/rate/smash-pass" class="btn variant-filled-primary hover:variant-filled-secondary"
-			>Smash or Pass</a
-		>
-		<a href="/rate/whoshotter" class="btn variant-filled-primary hover:variant-filled-secondary"
-			>Who's hotter?</a
-		>
-		<a href="/nameguesser" class="btn variant-filled-primary hover:variant-filled-secondary"
-			>Name Guesser</a
-		>
-	</span>
+			<a href="/rate/whoshotter" class="btn variant-filled-primary hover:variant-filled-secondary"
+				>Who's hotter?</a
+			>
+			<a href="/nameguesser" class="btn variant-filled-primary hover:variant-filled-secondary"
+				>Name Guesser</a
+			>
+		</span>
+	</div>
 	{#if $authStudent}
-		<Avatar
-			...
-			border="border-4 border-surface-300-600-token hover:!border-primary-500"
-			cursor="cursor-pointer"
-			src="/images/{$authStudent.picture_id}.jpg"
-			on:click={() => {}}
-		/>
+		<div class="relative profilebox">
+			<button id="profilebtn" class="btn p-0">
+				<Avatar
+					...
+					border="border-4 border-surface-300-600-token hover:!border-primary-500"
+					cursor="cursor-pointer"
+					src="/images/{$authStudent.picture_id}.jpg"
+				/>
+			</button>
+
+			<div
+				class="bg-white origin-top-right {profileopen
+					? ''
+					: 'scale-0 opacity-0'} duration-300 transition-[transform,_opacity] top-full mt-8 right-0 rounded-lg p-4 absolute flex flex-col gap-4"
+			>
+				<p class="text-black whitespace-nowrap">Elo {$authStudent.elo}</p>
+				<a
+					on:click={() => {
+						profileopen = false;
+					}}
+					href="/rate/matches"
+					class="btn variant-filled-primary"
+				>
+					<span class="">Matches</span>
+					<span
+						><svg
+							xmlns="http://www.w3.org/2000/svg"
+							class="icon icon-tabler icon-tabler-heart stroke-none fill-green-400"
+							width="24"
+							height="24"
+							viewBox="0 0 24 24"
+							stroke-width="2"
+							stroke="currentColor"
+							fill="none"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+						>
+							<path stroke="none" d="M0 0h24v24H0z" fill="none" />
+							<path
+								d="M19.5 12.572l-7.5 7.428l-7.5 -7.428a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572"
+							/>
+						</svg>
+					</span>
+				</a>
+				<button
+					on:click={async () => {
+						cirql.signOut();
+						profileopen = false;
+					}}
+					class="btn variant-filled-primary hover:variant-filled-secondary">Log ud</button
+				>
+			</div>
+		</div>
 	{:else}
 		<a href="/login" class="btn variant-filled-primary hover:variant-filled-secondary">Login</a>
 	{/if}

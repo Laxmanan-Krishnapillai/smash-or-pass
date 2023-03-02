@@ -1,5 +1,6 @@
 import { Cirql } from 'cirql';
-import { writable } from 'svelte/store';
+import { writable, type Writable } from 'svelte/store';
+import { localStorageStore } from '@skeletonlabs/skeleton';
 import type { Student } from '$lib/schema';
 const cirql = new Cirql({
 	connection: {
@@ -11,4 +12,4 @@ const cirql = new Cirql({
 export { cirql };
 
 export const dbready = writable(false);
-export const authStudent = writable<Student | null>(null);
+export const authStudent: Writable<Student | null> = localStorageStore('authStudent', null);

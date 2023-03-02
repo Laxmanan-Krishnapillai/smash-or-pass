@@ -9,7 +9,8 @@
 	let username = '';
 	let password = '';
 	const settings = {
-		message: 'Logging in...'
+		message: 'Logger ind...',
+		background: 'secondary'
 	} satisfies ToastSettings;
 </script>
 
@@ -18,7 +19,6 @@
 		bind:this={form}
 		on:submit={() => {
 			toastStore.trigger(settings);
-			toastStore.clear();
 		}}
 		use:enhance={({ form, data, action, cancel }) => {
 			return async ({ result, update }) => {

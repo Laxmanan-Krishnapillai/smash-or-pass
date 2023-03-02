@@ -1,23 +1,26 @@
 <script lang="ts">
 	import { cirql } from '$lib/db';
-	import { writable } from 'svelte/store';
-	import { InputChip } from '@skeletonlabs/skeleton';
+	import { writable, type Writable } from 'svelte/store';
+	import { InputChip, localStorageStore } from '@skeletonlabs/skeleton';
 	import Switch from '$lib/components/switch.svelte';
 	import { ClassSchema, StudentSchema, type Student } from '$lib/schema';
 	import { query, select } from 'cirql';
 	import { dbready } from '$lib/db';
 	let isChecked = writable(true);
-	let classes: string[] = [];
+	let classes: Writable<string[]> = localStorageStore('classes', ['']);
 	let activeClass: string[] = [];
 	$: gender = $isChecked ? 'female' : 'male';
 	dbready.subscribe(async (ready) => {
+		console.log('ready');
 		if (!ready) return;
-		classes = (
+		if ($classes.length > 1) return;
+		const res = (
 			await cirql.execute({
 				query: select('name').from('class'),
 				schema: ClassSchema.pick({ name: true })
 			})
 		).map((c) => c.name);
+		classes.set(res);
 		console.log(classes);
 	});
 	let val: string = '';
