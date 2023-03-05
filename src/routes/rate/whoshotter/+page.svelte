@@ -3,30 +3,30 @@
 	import { cirql } from '$lib/db';
 	import { query, create, countRecord, count, eq } from 'cirql';
 	import Switch from '$lib/components/switch.svelte';
-	import { type Student, StudentSchema, EloRatingSchema } from '$lib/schema';
+	import { type Student, StudentSchema, EloRatingSchema, ClassSchema } from '$lib/schema';
 	import { Paginator } from '@skeletonlabs/skeleton';
 	import { writable } from 'svelte/store';
+	import { z } from 'zod';
 	import { dbready } from '$lib/db';
-	import type { TypeOf } from 'zod';
-	let student1 = writable<Student | null>(null);
-	let student2 = writable<Student | null>(null);
+	let student1 = writable<(Student & { cname?: string }) | null>(null);
+	let student2 = writable<(Student & { cname?: string }) | null>(null);
 	let isChecked = writable(true);
-	let rank: null | Student[] = null;
+	let rank: (Student & { cname?: string })[] | null = null;
 	Paginator;
 	let settings = writable({
 		offset: 0,
-		limit: 2,
+		limit: 10,
 		size: 0,
-		amounts: [1, 2, 5, 10]
+		amounts: [1, 2, 5, 10, 20, 50, 100]
 	});
 	const updaterank = async () => {
 		const res = await cirql.execute({
 			query: query(
-				`SELECT * FROM student WHERE gender == $gender ORDER BY elo DESC LIMIT ${
+				`SELECT *, class.name as cname FROM student WHERE gender == $gender ORDER BY elo DESC LIMIT ${
 					$settings.limit
 				} START ${$settings.offset * $settings.limit}`
 			),
-			schema: StudentSchema,
+			schema: StudentSchema.merge(z.object({ cname: z.string().optional() })),
 			params: {
 				gender: $isChecked ? 'female' : 'male'
 			}
@@ -43,22 +43,21 @@
 		const res = await cirql.batch(
 			{
 				query: query(
-					`SELECT * FROM student WHERE gender == $gender limit 1 start ${val1}`
+					`SELECT *, class.name as cname FROM student WHERE gender == $gender limit 1 start ${val1}`
 				).single(),
-				schema: StudentSchema,
+				schema: StudentSchema.merge(z.object({ cname: z.string().optional() })),
 				params: {
 					gender: gender ? 'female' : 'male'
 				}
 			},
 			{
 				query: query(
-					`SELECT * FROM student WHERE gender == $fender limit 1 start ${val2}`
+					`SELECT *, class.name as cname FROM student WHERE gender == $fender limit 1 start ${val2}`
 				).single(),
 				params: {
 					fender: gender ? 'female' : 'male'
 				},
-
-				schema: StudentSchema
+				schema: StudentSchema.merge(z.object({ cname: z.string().optional() }))
 			}
 		);
 		student1.set(res[0]);
@@ -119,9 +118,11 @@
 		getrandomstudents(2, val);
 		updaterank();
 	});
+	let width = 0;
 </script>
 
-<section class="flex items-center justify-center gap-10 h-screen flex-col">
+<svelte:window bind:innerWidth={width} />
+<section class="flex items-center justify-center gap-10 h-max mt-40 flex-col">
 	<Switch bind:isChecked />
 	<div class="flex gap-4">
 		<button on:click={() => $student1 && $student2 && vote($student1.id, $student2.id)}>
@@ -156,9 +157,10 @@
 		SKIP
 	</button>
 </section>
-<section class="flex flex-col h-screen px-20 gap-4">
+<section class="flex flex-col max-w-xl h-screen mt-20 mx-auto px-4 md:px-20 gap-4">
 	<h1>Rank</h1>
 	<Paginator
+		amountText="Person(er)"
 		on:page={async () => {
 			await updaterank();
 		}}
@@ -168,18 +170,23 @@
 		settings={$settings}
 	/>
 	{#if rank}
-		{#each rank as student}
-			<div class="flex items-center gap-4">
-				<div class="w-36 h-48 bg-gray-600 rounded-xl">
-					<img
-						class="object-cover rounded-xl"
-						src="/images/{student.picture_id}.jpg"
-						alt="placeholder"
-					/>
-				</div>
-				<p>{student.name}</p>
-				<p>{student.elo}</p>
-			</div>
-		{/each}
+		<div class="card">
+			<dl class="list-dl max-h-96 overflow-scroll">
+				{#each rank as student}
+					<div>
+						<span
+							><img
+								src="/images/{student.picture_id}.jpg"
+								class="rounded-full w-10 h-10 object-cover"
+							/></span
+						>
+						<span class="flex-auto">
+							<dt>{student.name} ({student.cname})</dt>
+							<dd>{student.elo.toFixed()}</dd>
+						</span>
+					</div>
+				{/each}
+			</dl>
+		</div>
 	{/if}
 </section>

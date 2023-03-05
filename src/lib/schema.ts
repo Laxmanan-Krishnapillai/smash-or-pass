@@ -1,28 +1,5 @@
 import { z } from 'zod';
 export type Student = z.infer<typeof StudentSchema>;
-export const StudentSchema = z.object({
-	class: z.string(),
-	created_at: z.string(),
-	// Elo can be string or number
-	elo: z.union([z.string(), z.number()]),
-	gender: z.enum(['male', 'female']),
-	id: z.string(),
-	lectio_id: z.string(),
-	lectio_tokens: z
-		.object({
-			expires: z.string().optional(),
-			gsc: z.string().optional(),
-			ticket: z.string().optional(),
-			token: z.string().optional()
-		})
-		.optional(),
-	name: z.string(),
-	password: z.string().optional(),
-	picture_id: z.string(),
-	username: z.string().optional(),
-	school: z.string()
-});
-
 export const ClassSchema = z.object({
 	lectio_id: z.string(),
 	name: z.string(),
@@ -44,6 +21,29 @@ export const SchoolSchema = z.object({
 	created_at: z.string(),
 	id: z.string()
 });
+export const StudentSchema = z.object({
+	class: z.string(),
+	created_at: z.string(),
+	// Elo can be string or number
+	elo: z.number(), // z.union([z.string(), z.number()]),
+	gender: z.enum(['male', 'female']),
+	id: z.string(),
+	lectio_id: z.string(),
+	lectio_tokens: z
+		.object({
+			expires: z.string().optional(),
+			gsc: z.string().optional(),
+			ticket: z.string().optional(),
+			token: z.string().optional()
+		})
+		.optional(),
+	name: z.string(),
+	password: z.string().optional(),
+	picture_id: z.string(),
+	username: z.string().optional(),
+	school: z.string()
+});
+
 /*DEFINE TABLE elo_rating SCHEMAFULL;
 DEFINE FIELD created_at ON TABLE elo TYPE datetime VALUE time::now();
 DEFINE FIELD author ON TABLE elo TYPE record (student) ASSERT $value != NONE;
