@@ -115,7 +115,7 @@
 			>
 		</span>
 	</div>
-	{#if $authStudent}
+	{#if $authStudent && $dbready}
 		<div class="relative profilebox">
 			<button id="profilebtn" class="btn p-0">
 				<Avatar
